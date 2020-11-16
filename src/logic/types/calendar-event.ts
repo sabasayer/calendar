@@ -16,6 +16,7 @@ interface CalendarEvent<T = undefined>  {
      */
     color:string
     borderColor?:string
+    textColor?:string
     isBordered?:boolean
     borderRadius?:string
     position:EnumCalendarDayItemPosition
@@ -23,6 +24,11 @@ interface CalendarEvent<T = undefined>  {
      * Must be bigger then zero
      */
     zIndex:number
+
+    isClickable?:boolean
+    isDraggable?:boolean
+    isResizable?:boolean
+
     /**
      * Data for customization
      */

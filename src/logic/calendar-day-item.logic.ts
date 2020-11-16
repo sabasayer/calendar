@@ -52,9 +52,9 @@ class CalendarDayItemLogic {
     );
   }
 
-  detectCollision(
-    item1: CalendarDayItemPosition,
-    item2: CalendarDayItemPosition
+  detectCollision<T extends CalendarDayItemPosition>(
+    item1: T,
+    item2: T
   ): boolean {
     const item1Bottom = item1.topOffset + item1.height;
     const item2Bottom = item2.topOffset + item2.height;

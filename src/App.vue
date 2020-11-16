@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <calendar-day
+      @item-click="itemClicked"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
       :hour-height="hourHeight"
       :minute-interval="minuteInterval"
-      :hour-padding-right="40"
+      :hour-padding-right="20"
     />
   </div>
 </template>
@@ -15,6 +16,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import CalendarDayComponent from "./components/CalendarDay.vue";
 import { EnumCalendarDayItemPosition } from "./logic/statics/calendar-day-item-position.enum";
+import { CalendarDayItem } from "./logic/types/calendar-day-item";
 import { CalendarEvent } from "./logic/types/calendar-event";
 
 @Component({
@@ -28,7 +30,7 @@ export default class App extends Vue {
   hourHeight = 80;
   minuteInterval = 20;
 
-  events: CalendarEvent[] = [ 
+  events: CalendarEvent[] = [
     {
       id: 1,
       from: "08:00",
@@ -37,6 +39,13 @@ export default class App extends Vue {
       color: "rgba(51,102,204,0.8)",
       position: EnumCalendarDayItemPosition.Relative,
       zIndex: 1,
+      isBordered: true,
+      textColor: "white",
+      borderColor: "blue",
+      borderRadius: "5px",
+      isClickable: true,
+      isDraggable: true,
+      isResizable: true,
     },
     {
       id: 2,
@@ -84,6 +93,15 @@ export default class App extends Vue {
       zIndex: 1,
     },
   ];
+
+  itemClicked(
+    item: CalendarDayItem[],
+    collidedItems: CalendarDayItem[],
+    element: HTMLElement
+  ) {
+    console.log("collided Items", element);
+  }
+  
 }
 </script>
 

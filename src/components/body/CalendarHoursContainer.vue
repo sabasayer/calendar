@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="calendar-hours">
+  <div class="calendar-hours">
     <div
       v-for="hour in hours"
       :key="hour.value"
@@ -15,11 +15,20 @@
       </div>
     </div>
 
-    <calendar-item v-for="item in items" :key="item.id" :item="item">
+    <calendar-item
+      v-for="item in items"
+      :key="item.id"
+      :item="item"
+      :hour-height="hourHeight"
+      :minute-interval="minuteInterval"
+      @click="itemClick"
+    >
       <template>
         <slot name="item" :item="item"></slot>
       </template>
     </calendar-item>
+
+    
   </div>
 </template>
 <script lang="ts">
@@ -27,7 +36,14 @@ import { calendarDayLogic } from "@/logic/calendar-day.logic";
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
 import { CalendarEvent } from "@/logic/types/calendar-event";
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
-import { Component, Mixins, Prop, Vue, Watch } from "vue-property-decorator";
+import {
+  Component,
+  Emit,
+  Mixins,
+  Prop,
+  Vue,
+  Watch,
+} from "vue-property-decorator";
 import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarItemComponent from "@/components/item/CalendarItem.vue";
 
@@ -44,10 +60,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
   readonly horizontalMarginBetweenItems!: number;
   @Prop({ type: Number, default: 20 })
   readonly hourPaddingRight: number;
-
-  $refs: {
-    container: HTMLElement;
-  };
 
   items: CalendarDayItem[] = [];
 
@@ -66,7 +78,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
   }
 
   getContainerWidth() {
-    return this.$refs.container?.clientWidth ?? 0;
+    return this.$el?.clientWidth ?? 0;
   }
 
   createItems() {
@@ -83,6 +95,15 @@ export default class CalendarHoursContainerComponent extends Mixins(
       containerWidth: availableWidth,
       marginBetweenItems: this.horizontalMarginBetweenItems,
     });
+  }
+
+  itemClick(item: CalendarDayItem, el: HTMLElement) {
+    const collidedItems = calendarDayLogic.filterCollidedItems(
+      item,
+      this.items
+    );
+
+    this.$emit("item-click", item, collidedItems, el);
   }
 }
 </script>

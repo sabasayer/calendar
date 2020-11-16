@@ -102,6 +102,17 @@ class CalendarDayLogic {
 
     return items;
   }
+
+  filterCollidedItems(
+    item: CalendarDayItem,
+    items: CalendarDayItem[]
+  ): CalendarDayItem[] {
+    return items.filter(
+      (e) =>
+        e.id !== item.id &&
+        calendarDayItemLogic.detectCollision<CalendarDayItem>(e, item)
+    );
+  }
 }
 
 export const calendarDayLogic = new CalendarDayLogic();

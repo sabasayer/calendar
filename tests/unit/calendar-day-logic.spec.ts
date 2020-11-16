@@ -132,7 +132,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         order: 0,
         width: 0,
-        zIndex:1,
+        zIndex: 1,
       },
       {
         topOffset: 130,
@@ -140,7 +140,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         order: 0,
         width: 0,
-        zIndex:1,
+        zIndex: 1,
       },
       {
         topOffset: 20,
@@ -148,7 +148,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 14,
         order: 0,
         width: 0,
-        zIndex:1,
+        zIndex: 1,
       },
     ];
 
@@ -160,7 +160,7 @@ describe("Calendar Day Logic", () => {
       leftOffset: 14,
       order: 0,
       width: 0,
-      zIndex:1,
+      zIndex: 1,
     });
 
     expect(items[1]).toEqual({
@@ -169,7 +169,7 @@ describe("Calendar Day Logic", () => {
       leftOffset: 0,
       order: 1,
       width: 0,
-      zIndex:1,
+      zIndex: 1,
     });
 
     expect(items[2]).toEqual({
@@ -178,7 +178,7 @@ describe("Calendar Day Logic", () => {
       leftOffset: 0,
       order: 2,
       width: 0,
-      zIndex:1,
+      zIndex: 1,
     });
   });
 
@@ -196,7 +196,7 @@ describe("Calendar Day Logic", () => {
         to: "09:00",
         position: EnumCalendarDayItemPosition.Static,
         title: "Kapalı",
-        zIndex:1
+        zIndex: 1,
       },
       {
         id: 2,
@@ -205,7 +205,7 @@ describe("Calendar Day Logic", () => {
         to: "10:30",
         position: EnumCalendarDayItemPosition.Relative,
         title: "Randevu 2",
-        zIndex:2,
+        zIndex: 2,
       },
       {
         id: 3,
@@ -214,7 +214,7 @@ describe("Calendar Day Logic", () => {
         to: "10:00",
         position: EnumCalendarDayItemPosition.Relative,
         title: "Randevu",
-        zIndex:2
+        zIndex: 2,
       },
       {
         id: 4,
@@ -223,7 +223,7 @@ describe("Calendar Day Logic", () => {
         to: "12:30",
         position: EnumCalendarDayItemPosition.Absolute,
         title: "Randevu 3",
-        zIndex:3,
+        zIndex: 3,
       },
       {
         id: 5,
@@ -232,7 +232,7 @@ describe("Calendar Day Logic", () => {
         to: "13:00",
         position: EnumCalendarDayItemPosition.Relative,
         title: "Randevu 3",
-        zIndex:2
+        zIndex: 2,
       },
     ];
 
@@ -288,5 +288,58 @@ describe("Calendar Day Logic", () => {
     ];
 
     expect(items).toEqual(expectedItems);
+  });
+
+  it("should find all collided items", () => {
+    const item: CalendarDayItem = {
+      id: 1,
+      height: 50,
+      topOffset: 100,
+      leftOffset: 0,
+      width: 0,
+      order: 1,
+      zIndex: 1,
+      color: "",
+      from: "",
+      position: EnumCalendarDayItemPosition.Absolute,
+      title: "",
+      to: "",
+    };
+
+    const allItems: CalendarDayItem[] = [
+      {
+        id: 2,
+        order: 2,
+        height: 40,
+        topOffset: 112,
+        leftOffset: 0,
+        width: 0,
+        zIndex: 1,
+        color: "",
+        from: "",
+        position: EnumCalendarDayItemPosition.Absolute,
+        title: "",
+        to: "",
+      },
+      {
+        id: 3,
+        order: 3,
+        height: 20,
+        topOffset: 10,
+        leftOffset: 0,
+        width: 0,
+        zIndex: 1,
+        color: "",
+        from: "",
+        position: EnumCalendarDayItemPosition.Absolute,
+        title: "",
+        to: "",
+      },
+      item,
+    ];
+
+    const collidedItems = calendarDayLogic.filterCollidedItems(item, allItems);
+
+    expect(collidedItems).toEqual([allItems[0]]);
   });
 });

@@ -11,6 +11,7 @@
       />
 
       <calendar-hours-container
+        @item-click="itemClick"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -33,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import CalendarHourHeadersComponent from "./body/CalendarHourHeaders.vue";
 import CalendarHoursContainerComponent from "./body/CalendarHoursContainer.vue";
 import CalendarDayFooterComponent from "./CalendarDayFooter.vue";
@@ -64,6 +65,9 @@ export default class CalendarDayComponent extends Vue {
   @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
   @Prop({ type: Number, default: 20 })
   readonly hourPaddingRight: number;
+
+  @Emit()
+  itemClick(){}
 }
 </script>
 <style scoped>
