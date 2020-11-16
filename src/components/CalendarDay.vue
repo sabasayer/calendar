@@ -3,10 +3,29 @@
     <calendar-day-header />
 
     <div class="calendar-day__body">
-      <calendar-day-hour-headers />
-      <calendar-day-minute-headers />
+      <calendar-hour-headers
+        :start-time="startTime"
+        :end-time="endTime"
+        :hour-height="hourHeight"
+        :minute-interval="minuteInterval"
+      />
 
-      <calendar-day-hours-container />
+      <calendar-hours-container
+        :start-time="startTime"
+        :end-time="endTime"
+        :hour-height="hourHeight"
+        :events="events"
+        :horizontal-margin-between-items="horizontalMarginBetweenItems"
+        :minute-interval="minuteInterval"
+        :hour-padding-right="hourPaddingRight"
+      >
+        <template #minute="{ minute,hour }">
+          <slot name="minute" :minute="minute" :hour="hour"></slot>
+        </template>
+        <template #item="{ item }">
+          <slot name="item" :item="item"></slot>
+        </template>
+      </calendar-hours-container>
     </div>
 
     <calendar-day-footer />
@@ -15,33 +34,40 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import CalendarDayHourHeadersComponent from "./body/CalendarDayHourHeaders.vue";
-import CalendarDayHoursContainerComponent from "./body/CalendarDayHoursContainer.vue";
-import CalendarDayMinuteHeadersComponent from "./body/CalendarDayMinuteHeaders.vue";
+import CalendarHourHeadersComponent from "./body/CalendarHourHeaders.vue";
+import CalendarHoursContainerComponent from "./body/CalendarHoursContainer.vue";
 import CalendarDayFooterComponent from "./CalendarDayFooter.vue";
 import CalendarDayHeaderComponent from "./CalendarDayHeader.vue";
-import { CalendarDayItemOptions } from "../logic/types/calendar-day-item-options";
+import { CalendarDayItem } from "@/logic/types/calendar-day-item";
+import { CalendarEvent } from "@/logic/types/calendar-event";
 
 @Component({
   components: {
     "calendar-day-header": CalendarDayHeaderComponent,
-    "calendar-day-hours-container": CalendarDayHoursContainerComponent,
+    "calendar-hours-container": CalendarHoursContainerComponent,
     "calendar-day-footer": CalendarDayFooterComponent,
-    "calendar-day-hour-headers": CalendarDayHourHeadersComponent,
-    "calendar-day-minute-headers": CalendarDayMinuteHeadersComponent,
+    "calendar-hour-headers": CalendarHourHeadersComponent,
   },
 })
 export default class CalendarDayComponent extends Vue {
-  @Prop({ type: Boolean, default: false }) readonly hasHeader!: boolean;
-  @Prop({ type: String }) readonly startHour?: string;
-  @Prop({ type: String }) readonly endHour?: string;
-  @Prop({ type: Number }) readonly hourHeight?: number;
-  @Prop({ type: Boolean, default: false }) readonly isHoursVisible!: boolean;
-  @Prop({ type: Boolean, default: false }) readonly isMinutesVisible!: boolean;
+  @Prop({ type: Boolean, default: false }) readonly hasHeader: boolean;
+  @Prop({ type: String, default: "00:00" }) readonly startTime?: string;
+  @Prop({ type: String, default: "23:00" }) readonly endTime?: string;
+  @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
+  @Prop({ type: Boolean, default: false }) readonly isHoursVisible: boolean;
+  @Prop({ type: Boolean, default: false }) readonly isMinutesVisible: boolean;
   @Prop({ type: String }) readonly Header?: string;
   @Prop({ required: true, default: () => [] })
-  readonly items!: CalendarDayItemOptions[];
+  readonly events: CalendarEvent[];
   @Prop({ type: Number, default: 4 })
-  readonly horizontalGapBetweenItems!: number;
+  readonly horizontalMarginBetweenItems: number;
+  @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
+  @Prop({ type: Number, default: 20 })
+  readonly hourPaddingRight: number;
 }
 </script>
+<style scoped>
+.calendar-day__body {
+  display: flex;
+}
+</style>

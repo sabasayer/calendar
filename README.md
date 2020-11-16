@@ -1,6 +1,12 @@
 # @sabasayer/calendar
 
-Basic calendarfor one day.
+Basic one day calendar.
+
+
+## Props
+
+
+## Slots
 
 ## Project setup
 ```

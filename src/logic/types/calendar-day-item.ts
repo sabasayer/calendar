@@ -1,4 +1,4 @@
-import { CalendarDayItemOptions } from "./calendar-day-item-options";
+import { CalendarEvent } from './calendar-event';
 
 interface CalendarDayItemPosition {
     order:number;
@@ -6,9 +6,10 @@ interface CalendarDayItemPosition {
     height:number;
     leftOffset:number;
     width:number;
+    zIndex:number;
 }
 
-interface CalendarDayItem<T = undefined> extends CalendarDayItemOptions<T>,CalendarDayItemPosition{
+interface CalendarDayItem<T = undefined> extends CalendarEvent<T>,CalendarDayItemPosition{
   
 }
 

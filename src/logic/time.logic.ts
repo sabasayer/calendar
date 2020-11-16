@@ -17,6 +17,10 @@ class TimeLogic {
     const timeSpan = this.getTimeSpan(timeSpanText);
     return timeSpan.hour * 60 + timeSpan.minute;
   }
+
+  createTwoDigitText(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
 }
 
 export const timeLogic = new TimeLogic();

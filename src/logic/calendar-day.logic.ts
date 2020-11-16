@@ -1,88 +1,106 @@
-import { timeLogic } from "./time.logic";
-import { CalendarDayItemPosition } from "./types/calendar-day-item";
+import { calendarDayItemLogic } from "./calendar-day-item.logic";
+import {
+  CalendarDayItem,
+  CalendarDayItemPosition,
+} from "./types/calendar-day-item";
+import { CalendarEvent } from "./types/calendar-event";
 
 class CalendarDayLogic {
-  calculateHeightPerMinute(heightPerHour: number): number {
-    return heightPerHour / 60;
-  }
-
-  calculateDistance(options: {
-    from: string;
-    to: string;
-    hourHeight: number;
-  }): number {
-    const totalFromMinutes = timeLogic.totalMinutesInTimeSpan(options.from);
-    const totalToMinutes = timeLogic.totalMinutesInTimeSpan(options.to);
-
-    const difference = totalToMinutes - totalFromMinutes;
-    if (difference < 0) throw "To must be later then from";
-
-    const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
-    return heightPerMinute * difference;
-  }
-
-  calculateTopOffset(options: {
-    from: string;
+  createItemWithVerticalPositions(options: {
+    event: CalendarEvent;
     hourHeight: number;
     startTime: string;
-  }): number {
-    return this.calculateDistance({
-      from: options.startTime,
-      to: options.from,
+  }): CalendarDayItem {
+    const { event: itemOptions } = options;
+
+    const height = calendarDayItemLogic.calculateHeight({
+      from: itemOptions.from,
+      to: itemOptions.to,
       hourHeight: options.hourHeight,
     });
-  }
 
-  calculateHeight(options: {
-    from: string;
-    to: string;
-    hourHeight: number;
-  }): number {
-    return this.calculateDistance(options);
-  }
-
-  detectCollision(
-    item1: CalendarDayItemPosition,
-    item2: CalendarDayItemPosition
-  ): boolean {
-    const item1Bottom = item1.topOffset + item1.height;
-    const item2Bottom = item2.topOffset + item2.height;
-
-    return item1Bottom >= item2.topOffset && item1.topOffset <= item2Bottom;
-  }
-
-  calculateWidth(options: {
-    item: CalendarDayItemPosition;
-    marginBetweenItems: number;
-    containerWidth: number;
-    collidedItemCount: number;
-  }): number {
-    const totalItemCount = options.collidedItemCount + 1;
-    const totalMargin = options.collidedItemCount * options.marginBetweenItems;
-    const remainingWidth = options.containerWidth - totalMargin;
-
-    const widthPerItem = remainingWidth / totalItemCount;
-    return widthPerItem;
-  }
-
-  calculateLeft(options: {
-    item: CalendarDayItemPosition;
-    collidedItems: CalendarDayItemPosition[];
-    containerWidth: number;
-    marginBetweenItems: number;
-  }): number {
-    const widthPerItem = this.calculateWidth({
-      collidedItemCount: options.collidedItems.length,
-      ...options,
+    const topOffset = calendarDayItemLogic.calculateTopOffset({
+      from: itemOptions.from,
+      hourHeight: options.hourHeight,
+      startTime: options.startTime,
     });
 
-    const sortedItems = [...options.collidedItems, options.item].sort(
-      (a, b) => a.order - b.order
-    );
-    const itemIndex = sortedItems.indexOf(options.item);
+    return {
+      ...options.event,
+      topOffset,
+      height,
+      leftOffset: 0,
+      width: 0,
+      order: 0,
+    };
+  }
 
-    const leftOffset = (widthPerItem + options.marginBetweenItems) * itemIndex;
-    return leftOffset;
+  updateHorizontalPositions(options: {
+    item: CalendarDayItem;
+    allItems: CalendarDayItem[];
+    containerWidth: number;
+    marginBetweenItems: number;
+  }): CalendarDayItem {
+    let { item, containerWidth, marginBetweenItems } = options;
+
+    const collidedItems = options.allItems.filter(
+      (e) =>
+        e.id != item.id &&
+        calendarDayItemLogic.isCollidable(e.position, item.position) &&
+        calendarDayItemLogic.detectCollision(e, item)
+    );
+
+    item.leftOffset = calendarDayItemLogic.calculateLeft({
+      item,
+      collidedItems,
+      containerWidth,
+      marginBetweenItems,
+    });
+
+    item.width = calendarDayItemLogic.calculateWidth({
+      item: item,
+      collidedItemCount: collidedItems.length,
+      containerWidth,
+      marginBetweenItems,
+    });
+
+    return item;
+  }
+
+  orderItems<T extends CalendarDayItemPosition>(items: T[]): T[] {
+    items.sort((a, b) => a.topOffset - b.topOffset);
+    items.forEach((item, i) => (item.order = i));
+
+    return items;
+  }
+
+  createItems(options: {
+    events: CalendarEvent[];
+    startTime: string;
+    hourHeight: number;
+    containerWidth: number;
+    marginBetweenItems: number;
+  }): CalendarDayItem[] {
+    let items = options.events.map((event) =>
+      this.createItemWithVerticalPositions({
+        event,
+        hourHeight: options.hourHeight,
+        startTime: options.startTime,
+      })
+    );
+
+    items = this.orderItems(items);
+
+    items = items.map((item) =>
+      this.updateHorizontalPositions({
+        item,
+        containerWidth: options.containerWidth,
+        marginBetweenItems: options.marginBetweenItems,
+        allItems: items,
+      })
+    );
+
+    return items;
   }
 }
 

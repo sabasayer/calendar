@@ -1,6 +1,7 @@
 import { EnumCalendarDayItemPosition } from '@/logic/statics/calendar-day-item-position.enum';
 
-interface CalendarDayItemOptions<T = undefined>  {
+interface CalendarEvent<T = undefined>  {
+    id:string|number
     /**
      * timeSpan
      */
@@ -14,11 +15,18 @@ interface CalendarDayItemOptions<T = undefined>  {
      * valid css color
      */
     color:string
+    borderColor?:string
+    isBordered?:boolean
+    borderRadius?:string
     position:EnumCalendarDayItemPosition
+    /**
+     * Must be bigger then zero
+     */
+    zIndex:number
     /**
      * Data for customization
      */
     detail?:T
 }
 
-export type {CalendarDayItemOptions}
+export type {CalendarEvent}
