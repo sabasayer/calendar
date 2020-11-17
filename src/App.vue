@@ -33,6 +33,15 @@ export default class App extends Vue {
 
   events: CalendarEvent[] = [
     {
+      id:120,
+      from:'10:00',
+      to:'11:00',
+      position:EnumCalendarDayItemPosition.Static,
+      title:'',
+      color:'#666',
+      zIndex:1,
+    },
+    {
       id: 1,
       from: "08:00",
       to: "08:25",

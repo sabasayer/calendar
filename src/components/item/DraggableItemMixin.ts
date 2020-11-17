@@ -1,10 +1,11 @@
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { Vue, Component, Prop, Emit, PropSync } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit, PropSync, Mixins } from "vue-property-decorator";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
+import DragTrackerMixin from '@/components/DragTrackerMixin';
 
 @Component
-export default class CalendarItemComponent extends Vue {
+export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   @Prop({ required: true }) readonly item: CalendarDayItem;
   @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
   @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
@@ -14,34 +15,17 @@ export default class CalendarItemComponent extends Vue {
   @PropSync("cloneItem")
   _cloneItem: CalendarDayItem;
 
-  firstTopOffset: number = 0;
-
   mouseDown(ev: MouseEvent) {
     if (!this.item.isDraggable) return;
-
-    this.calculateFirstTopOffset(ev);
+    
+    this.calculateFirstTopOffset(ev,this.item.topOffset);
     this.createClone();
     this.createMouseMoveListener();
     this.createMouseUpListener();
   }
 
-  calculateFirstTopOffset(ev: MouseEvent) {
-    this.firstTopOffset = draggableItemLogic.calculateRelativeTop(
-      ev.pageY,
-      this.item.topOffset
-    );
-  }
-
   createClone() {
     this._cloneItem = draggableItemLogic.createClone(this.item);
-  }
-
-  createMouseMoveListener() {
-    document.addEventListener("mousemove", this.mouseMove);
-  }
-
-  createMouseUpListener() {
-    document.addEventListener("mouseup", this.mouseUp);
   }
 
   showClone() {
@@ -110,24 +94,8 @@ export default class CalendarItemComponent extends Vue {
     return this.item.topOffset != this._cloneItem.topOffset;
   }
 
-  removeMouseMoveListener() {
-    document.removeEventListener("mousemove", this.mouseMove);
-  }
-
-  removeMouseUpListener() {
-    document.removeEventListener("mouseup", this.mouseUp);
-  }
-
-  removeListeners() {
-    this.removeMouseMoveListener();
-    this.removeMouseUpListener();
-  }
-
   drop() {
     this.$emit("drop", this._cloneItem, this.$el);
   }
 
-  beforeDestroy() {
-    this.removeListeners();
-  }
 }

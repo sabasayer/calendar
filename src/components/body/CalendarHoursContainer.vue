@@ -23,8 +23,10 @@
       :minute-interval="minuteInterval"
       :is-clone-visible.sync="isCloneVisible"
       :clone-item.sync="cloneItem"
+      :start-time="startTime"
       @click="itemClick"
       @drop="itemDrop"
+      @resize="resize"
     >
       <template>
         <slot name="item" :item="item"></slot>
@@ -49,7 +51,7 @@ import {
 } from "vue-property-decorator";
 import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarItemComponent from "@/components/item/CalendarItem.vue";
-import { calendarDayItemLogic } from '@/logic/calendar-day-item.logic';
+import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 
 @Component({
   components: {
@@ -68,7 +70,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
   items: CalendarDayItem[] = [];
 
   isCloneVisible: boolean = false;
-  cloneItem:CalendarDayItem = calendarDayItemLogic.createDefaultModel();
+  cloneItem: CalendarDayItem = calendarDayItemLogic.createDefaultModel();
 
   get minutes() {
     return (hour: number) =>
@@ -82,6 +84,10 @@ export default class CalendarHoursContainerComponent extends Mixins(
   @Watch("events", { deep: true })
   onEventsChanged() {
     this.createItems();
+  }
+
+  clearClone() {
+    this.cloneItem = calendarDayItemLogic.createDefaultModel();
   }
 
   getContainerWidth() {
@@ -112,12 +118,21 @@ export default class CalendarHoursContainerComponent extends Mixins(
     const collidedItems = this.filterCollidedItems(item);
 
     this.$emit("item-click", item, collidedItems, el);
+    this.clearClone();
   }
 
   itemDrop(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
     this.$emit("item-drop", item, collidedItems, el);
+    this.clearClone();
+  }
+
+  resize(item: CalendarDayItem, el: HTMLElement) {
+    const collidedItems = this.filterCollidedItems(item);
+
+    this.$emit("item-resize", item, collidedItems, el);
+    this.clearClone();
   }
 }
 </script>

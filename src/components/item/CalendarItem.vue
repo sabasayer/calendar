@@ -13,6 +13,7 @@
 
       <vertical-resize-handler
         v-if="item.isResizable"
+        @resize-start="onResizeStart"
         @resize="onResized"
         @resize-end="onResizeEnd"
         :hour-height="hourHeight"
@@ -25,7 +26,7 @@
 
 <script lang="ts">
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { Vue, Component, Prop, Emit, Mixins } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit, Mixins, Watch } from "vue-property-decorator";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import DraggableItemMixin from "./DraggableItemMixin";
 import VerticalResizeHandlerComponent from "../VerticalResizeHandler.vue";
@@ -70,12 +71,13 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     this.$emit("click", this.item, this.$el);
   }
 
+  onResizeStart(){
+    this.createClone();
+  }
+
   onResized(newBottomOffset: number) {
-    if (this.item.id != this._cloneItem.id) this.createClone();
 
     const newHeight = newBottomOffset - this._cloneItem.topOffset;
-
-    console.log("topOffset", this._cloneItem.topOffset);
 
     this._cloneItem = calendarDayItemLogic.updateItemValuesWithTopOffset({
       item: this._cloneItem,

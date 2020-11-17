@@ -13,6 +13,7 @@
       <calendar-hours-container
         @item-click="itemClick"
         @item-drop="itemDrop"
+        @item-resize="itemResize"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -72,6 +73,9 @@ export default class CalendarDayComponent extends Vue {
 
   @Emit()
   itemDrop() {}
+
+  @Emit()
+  itemResize() {}
 }
 </script>
 <style scoped>

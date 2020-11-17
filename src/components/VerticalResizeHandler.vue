@@ -3,35 +3,22 @@
 </template>
 <script lang="ts">
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Mixins, Prop, Vue } from "vue-property-decorator";
+import DragTrackerMixin from "./DragTrackerMixin";
 
 @Component
-export default class VerticalResizeHandlerComponent extends Vue {
+export default class VerticalResizeHandlerComponent extends Mixins(
+  DragTrackerMixin
+) {
   @Prop({ type: Number, required: true }) readonly topOffset: number;
   @Prop({ type: Number, required: true }) readonly minuteInterval: number;
   @Prop({ type: Number, required: true }) readonly hourHeight: number;
 
-  firstTopOffset: number = 0;
-
   mouseDown(ev: MouseEvent) {
-    this.calculateFirstTopOffset(ev);
+    this.calculateFirstTopOffset(ev, this.topOffset);
+    this.resizeStart();
     this.createMouseMoveListener();
     this.createMouseUpListener();
-  }
-
-  calculateFirstTopOffset(ev: MouseEvent) {
-    this.firstTopOffset = draggableItemLogic.calculateRelativeTop(
-      ev.pageY,
-      this.topOffset
-    );
-  }
-
-  createMouseMoveListener() {
-    document.addEventListener("mousemove", this.mouseMove);
-  }
-
-  createMouseUpListener() {
-    document.addEventListener("mouseup", this.mouseUp);
   }
 
   mouseMove(ev: MouseEvent) {
@@ -61,28 +48,14 @@ export default class VerticalResizeHandlerComponent extends Vue {
     this.resizeEnd();
   }
 
-  removeListeners() {
-    this.removeMouseMoveListener();
-    this.removeMouseUpListener();
-  }
-
-  removeMouseMoveListener() {
-    document.removeEventListener("mousemove", this.mouseMove);
-  }
-
-  removeMouseUpListener() {
-    document.removeEventListener("mouseup", this.mouseUp);
-  }
+  @Emit()
+  resizeStart() {}
 
   @Emit()
   resize(offset: number) {}
 
   @Emit()
   resizeEnd() {}
-
-  beforeDestroy() {
-    this.removeListeners();
-  }
 }
 </script>
 <style scoped>
