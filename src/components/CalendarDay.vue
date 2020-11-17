@@ -12,6 +12,7 @@
 
       <calendar-hours-container
         @item-click="itemClick"
+        @item-drop="itemDrop"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -20,7 +21,7 @@
         :minute-interval="minuteInterval"
         :hour-padding-right="hourPaddingRight"
       >
-        <template #minute="{ minute,hour }">
+        <template #minute="{ minute, hour }">
           <slot name="minute" :minute="minute" :hour="hour"></slot>
         </template>
         <template #item="{ item }">
@@ -67,7 +68,10 @@ export default class CalendarDayComponent extends Vue {
   readonly hourPaddingRight: number;
 
   @Emit()
-  itemClick(){}
+  itemClick() {}
+
+  @Emit()
+  itemDrop() {}
 }
 </script>
 <style scoped>

@@ -2,6 +2,7 @@
   <div id="app">
     <calendar-day
       @item-click="itemClicked"
+      @item-drop="itemDrop"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
@@ -95,13 +96,25 @@ export default class App extends Vue {
   ];
 
   itemClicked(
-    item: CalendarDayItem[],
+    item: CalendarDayItem,
     collidedItems: CalendarDayItem[],
     element: HTMLElement
   ) {
-    console.log("collided Items", element);
+    console.info("item clicked", element);
   }
-  
+
+  itemDrop(
+    item: CalendarDayItem,
+    collidedItems: CalendarDayItem[],
+    element: HTMLElement
+  ) {
+    console.log("item dropped", element);
+
+    const event = this.events.find(e=>e.id == item.id);
+    if(!event) return;
+
+    
+  }
 }
 </script>
 

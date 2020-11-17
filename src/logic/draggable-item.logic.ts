@@ -34,6 +34,7 @@ class DraggableItemLogic {
     clone.isDraggable = false;
     clone.isResizable = false;
     clone.isClickable = false;
+    clone.zIndex = 20;
     return clone;
   }
 }

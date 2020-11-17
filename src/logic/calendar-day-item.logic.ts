@@ -1,8 +1,31 @@
+import cloneDeep from "lodash.clonedeep";
 import { EnumCalendarDayItemPosition } from "./statics/calendar-day-item-position.enum";
 import { timeLogic } from "./time.logic";
-import { CalendarDayItemPosition } from "./types/calendar-day-item";
+import {
+  CalendarDayItem,
+  CalendarDayItemPosition,
+} from "./types/calendar-day-item";
 
 class CalendarDayItemLogic {
+  createDefaultModel = (): CalendarDayItem => ({
+    id: 0,
+    color: "",
+    from: "",
+    to: "",
+    height: 0,
+    leftOffset: 0,
+    order: 0,
+    position: EnumCalendarDayItemPosition.Relative,
+    title: "",
+    isBordered: false,
+    isClickable: false,
+    topOffset: 0,
+    width: 0,
+    zIndex: 0,
+    borderColor: "",
+    borderRadius: "",
+  });
+
   calculateHeightPerMinute(heightPerHour: number): number {
     return heightPerHour / 60;
   }
@@ -94,6 +117,46 @@ class CalendarDayItemLogic {
 
     const leftOffset = (widthPerItem + options.marginBetweenItems) * itemIndex;
     return leftOffset;
+  }
+
+  calculateTimeSpanFromTopOffset(options: {
+    topOffset: number;
+    hourHeight: number;
+    startTime: string;
+  }): string {
+    const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
+    const minutesOffset = options.topOffset / heightPerMinute;
+
+    return timeLogic.addMinutesToTimeSpanText(options.startTime, minutesOffset);
+  }
+
+  updateItemValuesWithTopOffset(options: {
+    item: CalendarDayItem;
+    newTopOffset: number;
+    newHeight?: number;
+    hourHeight: number;
+    startTime: string;
+  }): CalendarDayItem {
+    const item = cloneDeep(options.item);
+    item.topOffset = options.newTopOffset;
+
+    if (options.newHeight) item.height = options.newHeight;
+
+    item.from = this.calculateTimeSpanFromTopOffset({
+      hourHeight: options.hourHeight,
+      startTime: options.startTime,
+      topOffset: options.newTopOffset,
+    });
+
+    const newBottom = options.newTopOffset + item.height;
+
+    item.to = this.calculateTimeSpanFromTopOffset({
+      hourHeight: options.hourHeight,
+      startTime: options.startTime,
+      topOffset: newBottom,
+    });
+
+    return item;
   }
 }
 

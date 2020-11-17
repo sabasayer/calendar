@@ -1,8 +1,9 @@
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
-import { CalendarDayItemPosition } from "@/logic/types/calendar-day-item";
+import { CalendarDayItem, CalendarDayItemPosition } from "@/logic/types/calendar-day-item";
 
 describe("Calendar Day Item Logic", () => {
+
   it("should calculate height per minute", () => {
     const hourHeight = 120;
     const heightPerMinute = calendarDayItemLogic.calculateHeightPerMinute(
@@ -193,7 +194,7 @@ describe("Calendar Day Item Logic", () => {
       height: 20,
       width: 0,
       leftOffset: 0,
-      zIndex:1
+      zIndex: 1,
     };
 
     let collidedItems: CalendarDayItemPosition[] = [
@@ -227,4 +228,68 @@ describe("Calendar Day Item Logic", () => {
 
     expect(leftOffset).toBe(70);
   });
+
+  it("should calculate timeSpan from topOffset", () => {
+    const topOffset = 10;
+    const hourHeight = 100;
+    const startTime = "08:00";
+
+    const timeSpan = calendarDayItemLogic.calculateTimeSpanFromTopOffset({
+      topOffset,
+      hourHeight,
+      startTime
+    })
+
+    expect(timeSpan).toBe('08:06');
+  });
+
+  it("should calculate timespan with decimal topOffset",() => {
+    const topOffset = 21.333333333333332;
+    const hourHeight = 80;
+    const startTime = "08:00";
+
+    const timeSpan = calendarDayItemLogic.calculateTimeSpanFromTopOffset({
+      topOffset,
+      hourHeight,
+      startTime
+    });
+
+    expect(timeSpan).toBe("08:16")
+  })
+
+  it("shoul update item values with new topOffset",() => {
+    let item:CalendarDayItem = {
+      color:'pink',
+      from:'18:00',
+      height:100,
+      to:'19:00',
+      id:1,
+      leftOffset:0,
+      width:10,
+      order:1,
+      position:EnumCalendarDayItemPosition.Relative,
+      title:'',
+      topOffset:1000,
+      zIndex:1
+    }
+
+    const hourHeight = 100;
+    const startHour = '08:00';
+    const newTopOffset = 1250;
+    const newHeight = 300;
+
+    item = calendarDayItemLogic.updateItemValuesWithTopOffset({
+      item,
+      newTopOffset,
+      newHeight,
+      hourHeight,
+      startTime: startHour
+    })
+
+    expect(item.topOffset).toBe(newTopOffset);
+    expect(item.height).toBe(300);
+    expect(item.from).toBe('20:30');
+    expect(item.to).toBe('23:30');
+
+  })
 });

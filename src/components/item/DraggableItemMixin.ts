@@ -1,16 +1,20 @@
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { Vue, Component, Prop, Emit } from "vue-property-decorator";
+import { Vue, Component, Prop, Emit, PropSync } from "vue-property-decorator";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
+import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 
 @Component
 export default class CalendarItemComponent extends Vue {
   @Prop({ required: true }) readonly item: CalendarDayItem;
   @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
   @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
+  @Prop({ type: String, default: "00:00" }) readonly startTime: string;
+  @PropSync("isCloneVisible", { type: Boolean, default: false })
+  _isCloneVisible: boolean;
+  @PropSync("cloneItem")
+  _cloneItem: CalendarDayItem;
 
   firstTopOffset: number = 0;
-  isCloneVisible: boolean = false;
-  cloneItem: Partial<CalendarDayItem> = {};
 
   mouseDown(ev: MouseEvent) {
     if (!this.item.isDraggable) return;
@@ -29,7 +33,7 @@ export default class CalendarItemComponent extends Vue {
   }
 
   createClone() {
-    this.cloneItem = draggableItemLogic.createClone(this.item);
+    this._cloneItem = draggableItemLogic.createClone(this.item);
   }
 
   createMouseMoveListener() {
@@ -40,15 +44,21 @@ export default class CalendarItemComponent extends Vue {
     document.addEventListener("mouseup", this.mouseUp);
   }
 
+  showClone() {
+    if (!this._isCloneVisible) this._isCloneVisible = true;
+  }
 
+  hideClone() {
+    if (this._isCloneVisible) this._isCloneVisible = false;
+  }
 
   mouseMove(ev: MouseEvent) {
     ev.preventDefault();
 
     const newTopOffset = this.calculateNewTopOffset(ev.pageY);
+    this.handleNewTopOffset(newTopOffset);
 
-    this.setCloneTopOffset(newTopOffset);
-    this.isCloneVisible = true;
+    this.showClone();
   }
 
   calculateNewTopOffset(pageY: number) {
@@ -66,17 +76,38 @@ export default class CalendarItemComponent extends Vue {
     return newTopOffset;
   }
 
-  setCloneTopOffset(topOffset: number) {
-    if (this.cloneItem.topOffset != topOffset)
-      this.cloneItem.topOffset = topOffset;
+  isTopOffsetChanged(topOffset: number): boolean {
+    return this._cloneItem.topOffset !== topOffset;
   }
 
+  handleNewTopOffset(topOffset: number) {
+    if (!this.isTopOffsetChanged(topOffset)) return;
 
+    this._cloneItem = calendarDayItemLogic.updateItemValuesWithTopOffset({
+      item: this._cloneItem as CalendarDayItem,
+      hourHeight: this.hourHeight,
+      newTopOffset: topOffset,
+      startTime: this.startTime,
+    });
+  }
+
+  calculateTimeSpanFromTopOffset(topOffset: number) {
+    return calendarDayItemLogic.calculateTimeSpanFromTopOffset({
+      topOffset,
+      hourHeight: this.hourHeight,
+      startTime: this.startTime,
+    });
+  }
 
   mouseUp() {
     this.removeListeners();
-    this.isCloneVisible = false;
-    this.drop();
+    this.hideClone();
+
+    if (this.isCloneMoved()) this.drop();
+  }
+
+  isCloneMoved() {
+    return this.item.topOffset != this._cloneItem.topOffset;
   }
 
   removeMouseMoveListener() {
@@ -92,9 +123,8 @@ export default class CalendarItemComponent extends Vue {
     this.removeMouseUpListener();
   }
 
-  @Emit()
   drop() {
-    return this.cloneItem;
+    this.$emit("drop", this._cloneItem, this.$el);
   }
 
   beforeDestroy() {

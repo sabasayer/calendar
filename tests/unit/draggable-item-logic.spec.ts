@@ -73,5 +73,11 @@ describe("Draggable Item Logic", () => {
     expect(clone.isClickable).toBe(false);
     expect(clone.isDraggable).toBe(false);
     expect(clone.isResizable).toBe(false);
+    expect(clone.zIndex).toBe(20);
   });
+
+
+  it("should detect collision for new position",() => {
+
+  })
 });
