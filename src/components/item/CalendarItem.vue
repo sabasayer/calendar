@@ -19,6 +19,7 @@
         :hour-height="hourHeight"
         :minute-interval="minuteInterval"
         :top-offset="topOffset"
+        :min-top-offset="item.topOffset"
       />
     </div>
   </div>
@@ -26,11 +27,19 @@
 
 <script lang="ts">
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { Vue, Component, Prop, Emit, Mixins, Watch } from "vue-property-decorator";
+import {
+  Vue,
+  Component,
+  Prop,
+  Emit,
+  Mixins,
+  Watch,
+} from "vue-property-decorator";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import DraggableItemMixin from "./DraggableItemMixin";
 import VerticalResizeHandlerComponent from "../VerticalResizeHandler.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
+import { resizeLogic } from "@/logic/resize.logic";
 
 @Component({
   components: {
@@ -38,6 +47,8 @@ import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
   },
 })
 export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
+  @Prop({ type: Boolean, default: false }) readonly isGhost: boolean;
+
   get topOffset() {
     return this._isCloneVisible
       ? this._cloneItem.topOffset + this._cloneItem.height
@@ -62,6 +73,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     return {
       bordered: this.item.isBordered,
       clickable: this.item.isClickable,
+      ghost: this.isGhost,
     };
   }
 
@@ -71,20 +83,37 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     this.$emit("click", this.item, this.$el);
   }
 
-  onResizeStart(){
+  onResizeStart() {
     this.createClone();
   }
 
   onResized(newBottomOffset: number) {
+    let newHeight = newBottomOffset - this._cloneItem.topOffset;
 
-    const newHeight = newBottomOffset - this._cloneItem.topOffset;
+    newHeight = resizeLogic.fixHeightByClosestBlockingPosition({
+      topOffset: this._cloneItem.topOffset,
+      height: newHeight,
+      startTime: this.startTime,
+      endTime: this.endTime,
+      hourHeight: this.hourHeight,
+      closestBlockingPosition: this.item.closestBlockingPosition,
+    });
 
-    this._cloneItem = calendarDayItemLogic.updateItemValuesWithTopOffset({
+    if (
+      !calendarDayItemLogic.isVerticalValuesChanged({
+        item: this._cloneItem,
+        topOffset: this._cloneItem.topOffset,
+        height: newHeight,
+      })
+    )
+      return;
+
+    this._cloneItem = calendarDayItemLogic.updateItemTimeValues({
       item: this._cloneItem,
       hourHeight: this.hourHeight,
       newTopOffset: this._cloneItem.topOffset,
       startTime: this.startTime,
-      newHeight,
+      newHeight: newHeight,
     });
 
     this.showClone();
@@ -118,6 +147,9 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     &:hover {
       opacity: 0.9;
     }
+  }
+  &.ghost {
+    outline: 4px solid steelblue;
   }
 }
 </style>

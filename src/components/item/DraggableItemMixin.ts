@@ -10,6 +10,7 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
   @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
   @Prop({ type: String, default: "00:00" }) readonly startTime: string;
+  @Prop({ type: String, default: "23:00" }) readonly endTime: string;
   @PropSync("isCloneVisible", { type: Boolean, default: false })
   _isCloneVisible: boolean;
   @PropSync("cloneItem")
@@ -57,7 +58,17 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
       hourHeight: this.hourHeight,
     });
 
-    return newTopOffset;
+    const fixedPosition = draggableItemLogic.keepInsideContainer({
+        endTime:this.endTime,
+        startTime:this.startTime,
+        height:this._cloneItem.height,
+        topOffset:newTopOffset,
+        hourHeight:this.hourHeight,
+        resizeToFix:false
+    })
+    
+
+    return fixedPosition.top;
   }
 
   isTopOffsetChanged(topOffset: number): boolean {
@@ -67,7 +78,7 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   handleNewTopOffset(topOffset: number) {
     if (!this.isTopOffsetChanged(topOffset)) return;
 
-    this._cloneItem = calendarDayItemLogic.updateItemValuesWithTopOffset({
+    this._cloneItem = calendarDayItemLogic.updateItemTimeValues({
       item: this._cloneItem as CalendarDayItem,
       hourHeight: this.hourHeight,
       newTopOffset: topOffset,

@@ -26,6 +26,15 @@ class CalendarDayItemLogic {
     borderRadius: "",
   });
 
+  isBlocking(
+    source: EnumCalendarDayItemPosition,
+    target: EnumCalendarDayItemPosition
+  ): boolean {
+    return source === EnumCalendarDayItemPosition.Absolute
+      ? false
+      : target === EnumCalendarDayItemPosition.Static;
+  }
+
   calculateHeightPerMinute(heightPerHour: number): number {
     return heightPerHour / 60;
   }
@@ -125,12 +134,12 @@ class CalendarDayItemLogic {
     startTime: string;
   }): string {
     const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
-    const minutesOffset = options.topOffset / heightPerMinute;
+    const minutesOffset = Math.ceil(options.topOffset / heightPerMinute);
 
     return timeLogic.addMinutesToTimeSpanText(options.startTime, minutesOffset);
   }
 
-  updateItemValuesWithTopOffset(options: {
+  updateItemTimeValues(options: {
     item: CalendarDayItem;
     newTopOffset: number;
     newHeight?: number;
@@ -157,6 +166,17 @@ class CalendarDayItemLogic {
     });
 
     return item;
+  }
+
+  isVerticalValuesChanged<T extends CalendarDayItemPosition>(options: {
+    item: T;
+    topOffset: number;
+    height: number;
+  }): boolean {
+    return (
+      options.item.topOffset != options.topOffset ||
+      options.item.height != options.height
+    );
   }
 }
 

@@ -65,7 +65,7 @@ describe("Draggable Item Logic", () => {
       topOffset: 120,
       width: 100,
       zIndex: 1,
-      isBordered:true
+      isBordered: true,
     };
 
     const clone = draggableItemLogic.createClone(item);
@@ -76,8 +76,116 @@ describe("Draggable Item Logic", () => {
     expect(clone.zIndex).toBe(20);
   });
 
+  it("should calculate bottom", () => {
+    const top = 100;
+    const height = 70;
 
-  it("should detect collision for new position",() => {
+    const bottom = draggableItemLogic.calculateBottom(top, height);
 
-  })
+    expect(bottom).toBe(170);
+  });
+
+  it("should calculate overflow", () => {
+    const top = 120;
+    const height = 200;
+    const containerHeight = 130;
+
+    const overflow = draggableItemLogic.calculateOverflow({
+      top,height,containerHeight
+    })
+
+    expect(overflow).toBe(190);
+  });
+
+  it("should fix bottom overflow", () => {
+    const top = 90;
+    const height = 30;
+    const containerHeight = 100;
+    const resizeToFix = false;
+
+    const fixed = draggableItemLogic.fixBottomOverflow({
+      top,
+      height,
+      containerHeight,
+      resizeToFix,
+    });
+
+    expect(fixed.top).toBe(70);
+    expect(fixed.height).toBe(30);
+  });
+
+  it("should fix bottom overflow with changing height", () => {
+    const top = 120;
+    const height = 100;
+    const containerHeight = 150;
+    const resizeToFix = true;
+
+    const fixed = draggableItemLogic.fixBottomOverflow({
+      top,
+      height,
+      containerHeight,
+      resizeToFix,
+    });
+
+    expect(fixed.top).toBe(120);
+    expect(fixed.height).toBe(30);
+  });
+
+  it(`should fix bottom overflow with changing top when 
+    topOffset is biggerThen containerHeight even if resizeToFix is true`, () => {
+    const top = 2000;
+    const height = 120;
+    const containerHeight = 500;
+    const resizeToFix = true;
+
+    const fixed = draggableItemLogic.fixBottomOverflow({
+      top,
+      height,
+      containerHeight,
+      resizeToFix,
+    });
+
+    expect(fixed.top).toBe(380);
+    expect(fixed.height).toBe(120);
+  });
+
+  it(`should fix bottom overflow with bot top and height if height
+   is bigger then containerHeight and top is bigger then 0`, () => {
+    const top = 120;
+    const height = 821;
+    const containerHeight = 400;
+    const resizeToFix = false;
+
+    const fixed = draggableItemLogic.fixBottomOverflow({
+      top,
+      height,
+      containerHeight,
+      resizeToFix,
+    });
+
+    expect(fixed.top).toBe(0);
+    expect(fixed.height).toBe(400);
+  });
+
+  it("should fix position for outOfContainer", () => {
+    const topOffset = 1500;
+    const height = 100;
+    const hourHeight = 100;
+    const startTime = "08:00";
+    const endTime = "23:00";
+    const resizeToFix = false;
+
+    const newTopOffset = draggableItemLogic.keepInsideContainer({
+      topOffset,
+      height,
+      hourHeight,
+      startTime,
+      endTime,
+      resizeToFix,
+    });
+
+    expect(newTopOffset.top).toBe(1400);
+    expect(newTopOffset.height).toBe(100);
+  });
+
 });

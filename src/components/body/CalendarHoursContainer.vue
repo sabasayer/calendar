@@ -24,6 +24,7 @@
       :is-clone-visible.sync="isCloneVisible"
       :clone-item.sync="cloneItem"
       :start-time="startTime"
+      :end-time="endTime"
       @click="itemClick"
       @drop="itemDrop"
       @resize="resize"
@@ -33,7 +34,7 @@
       </template>
     </calendar-item>
 
-    <calendar-item v-if="isCloneVisible" key="ghost" :item="cloneItem" />
+    <calendar-item v-if="isCloneVisible" is-ghost key="ghost" :item="cloneItem" />
   </div>
 </template>
 <script lang="ts">

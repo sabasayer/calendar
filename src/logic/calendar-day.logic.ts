@@ -1,4 +1,6 @@
 import { calendarDayItemLogic } from "./calendar-day-item.logic";
+import { resizeLogic } from "./resize.logic";
+import { EnumCalendarDayItemPosition } from "./statics/calendar-day-item-position.enum";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
@@ -100,6 +102,14 @@ class CalendarDayLogic {
       })
     );
 
+    items.forEach(
+      (item) =>
+        (item.closestBlockingPosition = this.findClosestBlockingPosition(
+          item,
+          items
+        ))
+    );
+
     return items;
   }
 
@@ -112,6 +122,25 @@ class CalendarDayLogic {
         e.id !== item.id &&
         calendarDayItemLogic.detectCollision<CalendarDayItem>(e, item)
     );
+  }
+
+  filterBlockingItems<T extends Pick<CalendarDayItem, "id" | "position">>(
+    item: T,
+    items: T[]
+  ): T[] {
+    return items.filter(
+      (e) =>
+        e.id !== item.id &&
+        calendarDayItemLogic.isBlocking(item.position, e.position)
+    );
+  }
+
+  findClosestBlockingPosition(
+    item: Pick<CalendarDayItem, "id" | "position" | "topOffset" | "height">,
+    items: Pick<CalendarDayItem, "id" | "position" | "topOffset">[]
+  ): number {
+    const blockingItems = this.filterBlockingItems(item, items);
+    return resizeLogic.findClosestTopPositionBelow(item, blockingItems);
   }
 }
 

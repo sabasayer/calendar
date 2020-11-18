@@ -230,7 +230,7 @@ describe("Calendar Day Logic", () => {
         color: "blue",
         from: "12:00",
         to: "13:00",
-        position: EnumCalendarDayItemPosition.Relative,
+        position: EnumCalendarDayItemPosition.Static,
         title: "Randevu 3",
         zIndex: 2,
       },
@@ -252,6 +252,7 @@ describe("Calendar Day Logic", () => {
         topOffset: 0,
         leftOffset: 0,
         width: containerWidth,
+        closestBlockingPosition: 400,
       },
       {
         ...options[2],
@@ -260,6 +261,7 @@ describe("Calendar Day Logic", () => {
         topOffset: 125,
         leftOffset: 0,
         width: 95,
+        closestBlockingPosition: 400,
       },
       {
         ...options[1],
@@ -268,6 +270,7 @@ describe("Calendar Day Logic", () => {
         topOffset: 150,
         leftOffset: 105,
         width: 95,
+        closestBlockingPosition: 400,
       },
       {
         ...options[3],
@@ -276,6 +279,7 @@ describe("Calendar Day Logic", () => {
         topOffset: 350,
         leftOffset: 0,
         width: containerWidth,
+        closestBlockingPosition: 0,
       },
       {
         ...options[4],
@@ -284,6 +288,7 @@ describe("Calendar Day Logic", () => {
         topOffset: 400,
         leftOffset: 0,
         width: containerWidth,
+        closestBlockingPosition: 0,
       },
     ];
 
@@ -341,5 +346,51 @@ describe("Calendar Day Logic", () => {
     const collidedItems = calendarDayLogic.filterCollidedItems(item, allItems);
 
     expect(collidedItems).toEqual([allItems[0]]);
+  });
+
+  it("should filter blocking items", () => {
+    const items: Pick<CalendarDayItem, "id" | "position">[] = [
+      { id: 1, position: EnumCalendarDayItemPosition.Absolute },
+      { id: 2, position: EnumCalendarDayItemPosition.Relative },
+      { id: 3, position: EnumCalendarDayItemPosition.Static },
+    ];
+
+    const item: Pick<CalendarDayItem, "id" | "position"> = {
+      id: 20,
+      position: EnumCalendarDayItemPosition.Relative,
+    };
+
+    const blockingItems = calendarDayLogic.filterBlockingItems(item, items);
+
+    expect(blockingItems).toEqual([
+      { id: 3, position: EnumCalendarDayItemPosition.Static },
+    ]);
+  });
+
+  it("should find closest blocking position below", () => {
+    const item: Pick<
+      CalendarDayItem,
+      "id" | "position" | "topOffset" | "height"
+    > = {
+      id: 122,
+      position: EnumCalendarDayItemPosition.Relative,
+      topOffset: 100,
+      height: 72,
+    };
+
+    const items: Pick<CalendarDayItem, "id" | "position" | "topOffset">[] = [
+      item,
+      { id: 1, position: EnumCalendarDayItemPosition.Relative, topOffset: 192 },
+      { id: 2, position: EnumCalendarDayItemPosition.Relative, topOffset: 122 },
+      { id: 3, position: EnumCalendarDayItemPosition.Absolute, topOffset: 202 },
+      { id: 4, position: EnumCalendarDayItemPosition.Static, topOffset: 212 },
+    ];
+
+    const blockingPosition = calendarDayLogic.findClosestBlockingPosition(
+      item,
+      items
+    );
+
+    expect(blockingPosition).toBe(212);
   });
 });

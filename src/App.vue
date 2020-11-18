@@ -33,73 +33,34 @@ export default class App extends Vue {
 
   events: CalendarEvent[] = [
     {
-      id:120,
-      from:'10:00',
-      to:'11:00',
-      position:EnumCalendarDayItemPosition.Static,
-      title:'',
-      color:'#666',
-      zIndex:1,
-    },
-    {
       id: 1,
       from: "08:00",
-      to: "08:25",
-      title: "Test",
-      color: "rgba(51,102,204,0.8)",
-      position: EnumCalendarDayItemPosition.Relative,
+      to: "08:12",
+      position: EnumCalendarDayItemPosition.Static,
+      title: "",
+      color: "#666",
       zIndex: 1,
-      isBordered: true,
-      textColor: "white",
-      borderColor: "blue",
-      borderRadius: "5px",
-      isClickable: true,
-      isDraggable: true,
       isResizable: true,
+      isDraggable: true,
     },
     {
-      id: 2,
-      from: "08:16",
-      to: "08:42",
-      title: "Test",
-      color: "rgba(51,102,104,0.8)",
-      position: EnumCalendarDayItemPosition.Relative,
-      zIndex: 1,
-    },
-    {
-      id: 3,
+      id: 120,
       from: "12:00",
-      to: "12:43",
-      title: "Test 2",
-      color: "rgba(51,102,104,0.8)",
-      position: EnumCalendarDayItemPosition.Absolute,
+      to: "12:20",
+      position: EnumCalendarDayItemPosition.Static,
+      title: "",
+      color: "#666",
       zIndex: 1,
+      isResizable: true,
+      isDraggable: true,
     },
     {
-      id: 4,
-      from: "11:40",
-      to: "12:13",
-      title: "Test 2",
-      color: "rgba(203,2,4,0.8)",
-      position: EnumCalendarDayItemPosition.Absolute,
-      zIndex: 1,
-    },
-    {
-      id: 5,
-      from: "13:00",
-      to: "13:15",
-      title: "Test",
-      color: "rgba(204,202,4,0.8)",
-      position: EnumCalendarDayItemPosition.Relative,
-      zIndex: 1,
-    },
-    {
-      id: 6,
-      from: "13:10",
-      to: "14:00",
-      title: "Test",
-      color: "rgba(200,102,4,0.8)",
-      position: EnumCalendarDayItemPosition.Relative,
+      id: 75,
+      from: "14:00",
+      to: "16:00",
+      position: EnumCalendarDayItemPosition.Static,
+      title: "",
+      color: "pink",
       zIndex: 1,
     },
   ];
@@ -119,10 +80,8 @@ export default class App extends Vue {
   ) {
     console.log("item dropped", element);
 
-    const event = this.events.find(e=>e.id == item.id);
-    if(!event) return;
-
-    
+    const event = this.events.find((e) => e.id == item.id);
+    if (!event) return;
   }
 }
 </script>

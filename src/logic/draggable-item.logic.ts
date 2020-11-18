@@ -3,6 +3,7 @@ import { CalendarDayItem } from "./types/calendar-day-item";
 import { MinuteInterval } from "./types/minute-interval";
 
 import cloneDeep from "lodash/cloneDeep";
+import { timeLogic } from "./time.logic";
 
 class DraggableItemLogic {
   snapToMinute(options: {
@@ -36,6 +37,96 @@ class DraggableItemLogic {
     clone.isClickable = false;
     clone.zIndex = 20;
     return clone;
+  }
+
+  calculateBottom(top: number, height: number): number {
+    return top + height;
+  }
+
+  calculateOverflow(options: {
+    top: number;
+    height: number;
+    containerHeight: number;
+  }): number {
+    return (
+      this.calculateBottom(options.top, options.height) -
+      options.containerHeight
+    );
+  }
+
+  fixBottomOverflow(options: {
+    top: number;
+    height: number;
+    containerHeight: number;
+    resizeToFix: boolean;
+  }): { top: number; height: number } {
+    let overFlow = this.calculateOverflow(options);
+
+    if (overFlow <= 0)
+      return {
+        top: options.top,
+        height: options.height,
+      };
+
+    let newTop = options.top;
+    let newHeight = options.height;
+
+    const isTopOutOfContainer = options.top >= options.containerHeight;
+    if (isTopOutOfContainer) newTop = Math.max(newTop - overFlow, 0);
+
+    overFlow = this.calculateOverflow({
+      top: newTop,
+      height: newHeight,
+      containerHeight: options.containerHeight,
+    });
+
+    const isBiggerThenContainer = newHeight > options.containerHeight;
+    if (isBiggerThenContainer) newHeight = options.containerHeight;
+
+    overFlow = this.calculateOverflow({
+      top: newTop,
+      height: newHeight,
+      containerHeight: options.containerHeight,
+    });
+
+    if (options.resizeToFix)
+      return {
+        top: newTop,
+        height: newHeight - overFlow,
+      };
+
+    return {
+      top: newTop - overFlow,
+      height: newHeight,
+    };
+  }
+
+  keepInsideContainer(options: {
+    topOffset: number;
+    height: number;
+    startTime: string;
+    endTime: string;
+    hourHeight: number;
+    resizeToFix: boolean;
+  }): { top: number; height: number } {
+    const totalHeight = calendarDayItemLogic.calculateDistance({
+      from: options.startTime,
+      to: options.endTime,
+      hourHeight: options.hourHeight,
+    });
+
+    if (options.topOffset < 0)
+      return {
+        top: 0,
+        height: options.height,
+      };
+
+    return this.fixBottomOverflow({
+      top: options.topOffset,
+      containerHeight: totalHeight,
+      height: options.height,
+      resizeToFix: options.resizeToFix,
+    });
   }
 }
 

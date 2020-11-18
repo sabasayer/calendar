@@ -1,9 +1,12 @@
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
-import { CalendarDayItem, CalendarDayItemPosition } from "@/logic/types/calendar-day-item";
+import { timeLogic } from "@/logic/time.logic";
+import {
+  CalendarDayItem,
+  CalendarDayItemPosition,
+} from "@/logic/types/calendar-day-item";
 
 describe("Calendar Day Item Logic", () => {
-
   it("should calculate height per minute", () => {
     const hourHeight = 120;
     const heightPerMinute = calendarDayItemLogic.calculateHeightPerMinute(
@@ -237,13 +240,27 @@ describe("Calendar Day Item Logic", () => {
     const timeSpan = calendarDayItemLogic.calculateTimeSpanFromTopOffset({
       topOffset,
       hourHeight,
-      startTime
-    })
+      startTime,
+    });
 
-    expect(timeSpan).toBe('08:06');
+    expect(timeSpan).toBe("08:06");
   });
 
-  it("should calculate timespan with decimal topOffset",() => {
+  it("should calculate timeSpan from topOffset when value is float", () => {
+    const topOffset = 533.33333333333326;
+    const hourHeight = 80;
+    const startTime = "08:00";
+
+    const timeSpan = calendarDayItemLogic.calculateTimeSpanFromTopOffset({
+      topOffset,
+      hourHeight,
+      startTime,
+    });
+
+    expect(timeSpan).toBe("14:40");
+  });
+
+  it("should calculate timespan with decimal topOffset", () => {
     const topOffset = 21.333333333333332;
     const hourHeight = 80;
     const startTime = "08:00";
@@ -251,45 +268,92 @@ describe("Calendar Day Item Logic", () => {
     const timeSpan = calendarDayItemLogic.calculateTimeSpanFromTopOffset({
       topOffset,
       hourHeight,
-      startTime
+      startTime,
     });
 
-    expect(timeSpan).toBe("08:16")
-  })
+    expect(timeSpan).toBe("08:16");
+  });
 
-  it("shoul update item values with new topOffset",() => {
-    let item:CalendarDayItem = {
-      color:'pink',
-      from:'18:00',
-      height:100,
-      to:'19:00',
-      id:1,
-      leftOffset:0,
-      width:10,
-      order:1,
-      position:EnumCalendarDayItemPosition.Relative,
-      title:'',
-      topOffset:1000,
-      zIndex:1
-    }
+  it("shoul update item values with new topOffset", () => {
+    let item: CalendarDayItem = {
+      color: "pink",
+      from: "18:00",
+      height: 100,
+      to: "19:00",
+      id: 1,
+      leftOffset: 0,
+      width: 10,
+      order: 1,
+      position: EnumCalendarDayItemPosition.Relative,
+      title: "",
+      topOffset: 1000,
+      zIndex: 1,
+    };
 
     const hourHeight = 100;
-    const startHour = '08:00';
+    const startHour = "08:00";
     const newTopOffset = 1250;
     const newHeight = 300;
 
-    item = calendarDayItemLogic.updateItemValuesWithTopOffset({
+    item = calendarDayItemLogic.updateItemTimeValues({
       item,
       newTopOffset,
       newHeight,
       hourHeight,
-      startTime: startHour
-    })
+      startTime: startHour,
+    });
 
     expect(item.topOffset).toBe(newTopOffset);
     expect(item.height).toBe(300);
-    expect(item.from).toBe('20:30');
-    expect(item.to).toBe('23:30');
+    expect(item.from).toBe("20:30");
+    expect(item.to).toBe("23:30");
+  });
 
-  })
+  it("should check if vertical values changed", () => {
+    const item: CalendarDayItemPosition = {
+      height: 100,
+      leftOffset: 200,
+      order: 1,
+      topOffset: 175,
+      width: 10,
+      zIndex: 1,
+    };
+
+    const isChanged = calendarDayItemLogic.isVerticalValuesChanged({
+      item,
+      topOffset: 175,
+      height: 90,
+    });
+
+    expect(isChanged).toBe(true);
+  });
+
+  describe("isBlocking", () => {
+    it("should return true if source = Static , target = Static", () => {
+      const isBlocking = calendarDayItemLogic.isBlocking(
+        EnumCalendarDayItemPosition.Static,
+        EnumCalendarDayItemPosition.Static
+      );
+
+      expect(isBlocking).toBe(true);
+    });
+
+    it("should return true if source = Relative , target = Static", () => {
+      const isBlocking = calendarDayItemLogic.isBlocking(
+        EnumCalendarDayItemPosition.Relative,
+        EnumCalendarDayItemPosition.Static
+      );
+
+      expect(isBlocking).toBe(true);
+    });
+
+    it("should not block at all if source = Absolute", () => {
+      const isBlocking = calendarDayItemLogic.isBlocking(
+        EnumCalendarDayItemPosition.Absolute,
+        EnumCalendarDayItemPosition.Static
+      );
+
+      expect(isBlocking).toBe(false);
+    });
+  });
 });
