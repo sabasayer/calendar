@@ -74,6 +74,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
       bordered: this.item.isBordered,
       clickable: this.item.isClickable,
       ghost: this.isGhost,
+      "cannot-drop": this.item.cannotDrop,
     };
   }
 
@@ -149,7 +150,12 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     }
   }
   &.ghost {
-    outline: 4px solid steelblue;
+    outline: 2px solid steelblue;
+    border: 2px solid white;
+    &.cannot-drop {
+      outline-color: red;
+      cursor: no-drop;
+    }
   }
 }
 </style>

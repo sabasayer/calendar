@@ -288,6 +288,7 @@ describe("Calendar Day Item Logic", () => {
       title: "",
       topOffset: 1000,
       zIndex: 1,
+      cannotDrop: false,
     };
 
     const hourHeight = 100;

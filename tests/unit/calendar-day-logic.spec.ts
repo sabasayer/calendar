@@ -33,6 +33,7 @@ describe("Calendar Day Logic", () => {
       height: 100,
       width: 0,
       order: 0,
+      cannotDrop: false,
     };
 
     expect(item).toEqual(expected);
@@ -52,6 +53,7 @@ describe("Calendar Day Logic", () => {
       width: 0,
       leftOffset: 0,
       zIndex: 1,
+      cannotDrop: false,
     };
 
     item = calendarDayLogic.updateHorizontalPositions({
@@ -79,6 +81,7 @@ describe("Calendar Day Logic", () => {
       leftOffset: 0,
       width: 0,
       zIndex: 1,
+      cannotDrop: false,
     };
 
     const allItems: CalendarDayItem[] = [
@@ -95,6 +98,7 @@ describe("Calendar Day Logic", () => {
         title: "",
         position: EnumCalendarDayItemPosition.Relative,
         zIndex: 1,
+        cannotDrop: false,
       },
       {
         id: 2,
@@ -109,6 +113,7 @@ describe("Calendar Day Logic", () => {
         title: "",
         position: EnumCalendarDayItemPosition.Relative,
         zIndex: 1,
+        cannotDrop: false,
       },
       item,
     ];
@@ -253,6 +258,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         width: containerWidth,
         closestBlockingPosition: 400,
+        cannotDrop: false,
       },
       {
         ...options[2],
@@ -262,6 +268,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         width: 95,
         closestBlockingPosition: 400,
+        cannotDrop: false,
       },
       {
         ...options[1],
@@ -271,6 +278,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 105,
         width: 95,
         closestBlockingPosition: 400,
+        cannotDrop: false,
       },
       {
         ...options[3],
@@ -280,6 +288,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         width: containerWidth,
         closestBlockingPosition: 0,
+        cannotDrop: false,
       },
       {
         ...options[4],
@@ -289,6 +298,7 @@ describe("Calendar Day Logic", () => {
         leftOffset: 0,
         width: containerWidth,
         closestBlockingPosition: 0,
+        cannotDrop: false,
       },
     ];
 
@@ -309,6 +319,7 @@ describe("Calendar Day Logic", () => {
       position: EnumCalendarDayItemPosition.Absolute,
       title: "",
       to: "",
+      cannotDrop:false
     };
 
     const allItems: CalendarDayItem[] = [
@@ -325,6 +336,7 @@ describe("Calendar Day Logic", () => {
         position: EnumCalendarDayItemPosition.Absolute,
         title: "",
         to: "",
+        cannotDrop: false,
       },
       {
         id: 3,
@@ -339,6 +351,7 @@ describe("Calendar Day Logic", () => {
         position: EnumCalendarDayItemPosition.Absolute,
         title: "",
         to: "",
+        cannotDrop: false,
       },
       item,
     ];
@@ -392,5 +405,64 @@ describe("Calendar Day Logic", () => {
     );
 
     expect(blockingPosition).toBe(212);
+  });
+
+  it("should filter blocking collided items", () => {
+    const item: CalendarDayItem = {
+      id: 1,
+      color: "",
+      from: "",
+      to: "",
+      height: 100,
+      leftOffset: 0,
+      order: 1,
+      position: EnumCalendarDayItemPosition.Relative,
+      title: "",
+      topOffset: 100,
+      width: 50,
+      zIndex: 1,
+      cannotDrop: false,
+    };
+
+    const items: CalendarDayItem[] = [
+      {
+        id: 2,
+        order: 2,
+        height: 40,
+        topOffset: 112,
+        leftOffset: 0,
+        width: 0,
+        zIndex: 1,
+        color: "",
+        from: "",
+        position: EnumCalendarDayItemPosition.Static,
+        title: "",
+        to: "",
+        cannotDrop: false,
+      },
+      {
+        id: 3,
+        order: 3,
+        height: 30,
+        topOffset: 80,
+        leftOffset: 0,
+        width: 0,
+        zIndex: 1,
+        color: "",
+        from: "",
+        position: EnumCalendarDayItemPosition.Absolute,
+        title: "",
+        to: "",
+        cannotDrop: false,
+      },
+      item,
+    ];
+
+    const blockingCollidedItems = calendarDayLogic.filterBLockingCollidedItems(
+      item,
+      items
+    );
+
+    expect(blockingCollidedItems).toEqual([items[0]]);
   });
 });

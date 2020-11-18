@@ -34,6 +34,7 @@ class CalendarDayLogic {
       leftOffset: 0,
       width: 0,
       order: 0,
+      cannotDrop: false,
     };
   }
 
@@ -141,6 +142,14 @@ class CalendarDayLogic {
   ): number {
     const blockingItems = this.filterBlockingItems(item, items);
     return resizeLogic.findClosestTopPositionBelow(item, blockingItems);
+  }
+
+  filterBLockingCollidedItems(
+    item: CalendarDayItem,
+    items: CalendarDayItem[]
+  ): CalendarDayItem[] {
+    const blockingItems = this.filterBlockingItems(item, items);
+    return this.filterCollidedItems(item, blockingItems);
   }
 }
 

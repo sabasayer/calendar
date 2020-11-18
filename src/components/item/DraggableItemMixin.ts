@@ -1,8 +1,15 @@
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { Vue, Component, Prop, Emit, PropSync, Mixins } from "vue-property-decorator";
+import {
+  Vue,
+  Component,
+  Prop,
+  Emit,
+  PropSync,
+  Mixins,
+} from "vue-property-decorator";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
-import DragTrackerMixin from '@/components/DragTrackerMixin';
+import DragTrackerMixin from "@/components/DragTrackerMixin";
 
 @Component
 export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
@@ -18,8 +25,8 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
 
   mouseDown(ev: MouseEvent) {
     if (!this.item.isDraggable) return;
-    
-    this.calculateFirstTopOffset(ev,this.item.topOffset);
+
+    this.calculateFirstTopOffset(ev, this.item.topOffset);
     this.createClone();
     this.createMouseMoveListener();
     this.createMouseUpListener();
@@ -59,14 +66,13 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
     });
 
     const fixedPosition = draggableItemLogic.keepInsideContainer({
-        endTime:this.endTime,
-        startTime:this.startTime,
-        height:this._cloneItem.height,
-        topOffset:newTopOffset,
-        hourHeight:this.hourHeight,
-        resizeToFix:false
-    })
-    
+      endTime: this.endTime,
+      startTime: this.startTime,
+      height: this._cloneItem.height,
+      topOffset: newTopOffset,
+      hourHeight: this.hourHeight,
+      resizeToFix: false,
+    });
 
     return fixedPosition.top;
   }
@@ -84,6 +90,8 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
       newTopOffset: topOffset,
       startTime: this.startTime,
     });
+
+    this.move();
   }
 
   calculateTimeSpanFromTopOffset(topOffset: number) {
@@ -105,8 +113,11 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
     return this.item.topOffset != this._cloneItem.topOffset;
   }
 
+  move() {
+    this.$emit("move", this._cloneItem, this.$el);
+  }
+
   drop() {
     this.$emit("drop", this._cloneItem, this.$el);
   }
-
 }

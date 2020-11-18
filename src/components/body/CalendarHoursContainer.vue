@@ -25,6 +25,7 @@
       :clone-item.sync="cloneItem"
       :start-time="startTime"
       :end-time="endTime"
+      @move="itemMove"
       @click="itemClick"
       @drop="itemDrop"
       @resize="resize"
@@ -34,7 +35,12 @@
       </template>
     </calendar-item>
 
-    <calendar-item v-if="isCloneVisible" is-ghost key="ghost" :item="cloneItem" />
+    <calendar-item
+      v-if="isCloneVisible"
+      is-ghost
+      key="ghost"
+      :item="cloneItem"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -115,25 +121,38 @@ export default class CalendarHoursContainerComponent extends Mixins(
     return calendarDayLogic.filterCollidedItems(item, this.items);
   }
 
+  filterBlockingCollidedItems(item: CalendarDayItem) {
+    return calendarDayLogic.filterBLockingCollidedItems(item, this.items);
+  }
+
   itemClick(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
-    this.$emit("item-click", item, collidedItems, el);
+    this.$emit("item-click", { item, collidedItems, el });
     this.clearClone();
   }
 
   itemDrop(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
+    const blockingCollidedItems = this.filterBlockingCollidedItems(item);
 
-    this.$emit("item-drop", item, collidedItems, el);
+    this.$emit("item-drop", { item, collidedItems, blockingCollidedItems, el });
     this.clearClone();
   }
 
   resize(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
-    this.$emit("item-resize", item, collidedItems, el);
+    this.$emit("item-resize", { item, collidedItems, el });
     this.clearClone();
+  }
+
+  itemMove(item: CalendarDayItem, el: HTMLElement) {
+    const blockingCollidedItems = this.filterBlockingCollidedItems(
+      this.cloneItem
+    );
+
+    this.cloneItem.cannotDrop = !!blockingCollidedItems.length;
   }
 }
 </script>

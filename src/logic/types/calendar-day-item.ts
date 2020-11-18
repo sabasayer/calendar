@@ -13,6 +13,7 @@ interface CalendarDayItem<T = undefined>
   extends CalendarEvent<T>,
     CalendarDayItemPosition {
   closestBlockingPosition?: number;
+  cannotDrop:boolean
 }
 
 export type { CalendarDayItem, CalendarDayItemPosition };

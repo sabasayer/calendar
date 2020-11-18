@@ -24,6 +24,7 @@ class CalendarDayItemLogic {
     zIndex: 0,
     borderColor: "",
     borderRadius: "",
+    cannotDrop: false,
   });
 
   isBlocking(

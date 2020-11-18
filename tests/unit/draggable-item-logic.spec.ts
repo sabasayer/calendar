@@ -66,6 +66,7 @@ describe("Draggable Item Logic", () => {
       width: 100,
       zIndex: 1,
       isBordered: true,
+      cannotDrop: false,
     };
 
     const clone = draggableItemLogic.createClone(item);
@@ -91,8 +92,10 @@ describe("Draggable Item Logic", () => {
     const containerHeight = 130;
 
     const overflow = draggableItemLogic.calculateOverflow({
-      top,height,containerHeight
-    })
+      top,
+      height,
+      containerHeight,
+    });
 
     expect(overflow).toBe(190);
   });
@@ -187,5 +190,4 @@ describe("Draggable Item Logic", () => {
     expect(newTopOffset.top).toBe(1400);
     expect(newTopOffset.height).toBe(100);
   });
-
 });

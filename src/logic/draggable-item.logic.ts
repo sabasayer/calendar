@@ -1,9 +1,7 @@
 import { calendarDayItemLogic } from "./calendar-day-item.logic";
 import { CalendarDayItem } from "./types/calendar-day-item";
-import { MinuteInterval } from "./types/minute-interval";
 
 import cloneDeep from "lodash/cloneDeep";
-import { timeLogic } from "./time.logic";
 
 class DraggableItemLogic {
   snapToMinute(options: {

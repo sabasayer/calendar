@@ -36,9 +36,20 @@ export default class App extends Vue {
       id: 1,
       from: "08:00",
       to: "08:12",
-      position: EnumCalendarDayItemPosition.Static,
-      title: "",
-      color: "#666",
+      position: EnumCalendarDayItemPosition.Relative,
+      title: "Randevu",
+      color: "orange",
+      zIndex: 1,
+      isResizable: true,
+      isDraggable: true,
+    },
+    {
+      id: 121,
+      from: "12:00",
+      to: "12:20",
+      position: EnumCalendarDayItemPosition.Relative,
+      title: "Randevu",
+      color: "teal",
       zIndex: 1,
       isResizable: true,
       isDraggable: true,
@@ -46,10 +57,10 @@ export default class App extends Vue {
     {
       id: 120,
       from: "12:00",
-      to: "12:20",
-      position: EnumCalendarDayItemPosition.Static,
-      title: "",
-      color: "#666",
+      to: "12:40",
+      position: EnumCalendarDayItemPosition.Relative,
+      title: "Randevu",
+      color: "pink",
       zIndex: 1,
       isResizable: true,
       isDraggable: true,
@@ -59,30 +70,27 @@ export default class App extends Vue {
       from: "14:00",
       to: "16:00",
       position: EnumCalendarDayItemPosition.Static,
-      title: "",
-      color: "pink",
+      title: "Kapalı",
+      color: "#555",
       zIndex: 1,
+      isResizable: true,
     },
   ];
 
-  itemClicked(
-    item: CalendarDayItem,
-    collidedItems: CalendarDayItem[],
-    element: HTMLElement
-  ) {
-    console.info("item clicked", element);
+  itemClicked(options: {
+    item: CalendarDayItem;
+    collidedItems: CalendarDayItem[];
+    element: HTMLElement;
+  }) {
+    console.info("item clicked", options.item);
   }
 
-  itemDrop(
-    item: CalendarDayItem,
-    collidedItems: CalendarDayItem[],
-    element: HTMLElement
-  ) {
-    console.log("item dropped", element);
-
-    const event = this.events.find((e) => e.id == item.id);
-    if (!event) return;
-  }
+  itemDrop(options: {
+    item: CalendarDayItem;
+    collidedItems: CalendarDayItem[];
+    collidedBlockingItems: CalendarDayItem[];
+    element: HTMLElement;
+  }) {}
 }
 </script>
 
