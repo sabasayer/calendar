@@ -35,7 +35,7 @@ export default class App extends Vue {
     {
       id: 1,
       from: "08:00",
-      to: "08:12",
+      to: "08:42",
       position: EnumCalendarDayItemPosition.Relative,
       title: "Randevu",
       color: "orange",
@@ -74,6 +74,7 @@ export default class App extends Vue {
       color: "#555",
       zIndex: 1,
       isResizable: true,
+      textColor: "white",
     },
   ];
 

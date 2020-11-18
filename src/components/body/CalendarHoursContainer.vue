@@ -93,14 +93,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.createItems();
   }
 
-  clearClone() {
-    this.cloneItem = calendarDayItemLogic.createDefaultModel();
-  }
-
-  getContainerWidth() {
-    return this.$el?.clientWidth ?? 0;
-  }
-
   createItems() {
     const containerWidth = this.getContainerWidth();
 
@@ -115,6 +107,14 @@ export default class CalendarHoursContainerComponent extends Mixins(
       containerWidth: availableWidth,
       marginBetweenItems: this.horizontalMarginBetweenItems,
     });
+  }
+
+  clearClone() {
+    this.cloneItem = calendarDayItemLogic.createDefaultModel();
+  }
+
+  getContainerWidth() {
+    return this.$el?.clientWidth ?? 0;
   }
 
   filterCollidedItems(item: CalendarDayItem) {

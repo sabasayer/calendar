@@ -134,6 +134,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
 .calendar-item {
   position: absolute;
   box-sizing: border-box;
+  overflow: hidden;
   .calendar-item__content {
     padding: 0.25rem;
     position: relative;
