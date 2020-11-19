@@ -35,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/sabasayer/calendar.git"
   },
-  "types": "types/components/index.d.ts",
+  "types": "src/logic/types/index.d.ts",
   "homepage": "https://github.com/sabasayer/calendar#readme",
   "license": "MIT",
   "devDependencies": {
@@ -50,6 +50,9 @@
     "typescript": "~3.9.3",
     "vue-template-compiler": "^2.6.11",
     "prettier": "2.1.2"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   },
   "browserslist": [
     "> 1%",

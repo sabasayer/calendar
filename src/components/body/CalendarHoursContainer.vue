@@ -126,6 +126,14 @@ export default class CalendarHoursContainerComponent extends Mixins(
     return calendarDayLogic.filterBLockingCollidedItems(item, this.items);
   }
 
+  itemMove(item: CalendarDayItem, el: HTMLElement) {
+    const blockingCollidedItems = this.filterBlockingCollidedItems(
+      this.cloneItem
+    );
+
+    this.cloneItem.cannotDrop = !!blockingCollidedItems.length;
+  }
+
   itemClick(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
@@ -162,14 +170,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     };
     this.$emit("item-resize", options);
     this.clearClone();
-  }
-
-  itemMove(item: CalendarDayItem, el: HTMLElement) {
-    const blockingCollidedItems = this.filterBlockingCollidedItems(
-      this.cloneItem
-    );
-
-    this.cloneItem.cannotDrop = !!blockingCollidedItems.length;
   }
 }
 </script>

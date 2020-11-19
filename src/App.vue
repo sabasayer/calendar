@@ -34,6 +34,7 @@ export default class App extends Vue {
   minuteInterval = 20;
 
   events: CalendarEvent[] = [
+  
     {
       id: 1,
       from: "08:00",
@@ -41,29 +42,29 @@ export default class App extends Vue {
       position: EnumCalendarDayItemPosition.Relative,
       title: "Randevu",
       color: "orange",
-      zIndex: 1,
+      zIndex: 5,
       isResizable: true,
       isDraggable: true,
     },
     {
       id: 121,
-      from: "12:00",
-      to: "12:20",
+      from: "09:00",
+      to: "10:20",
       position: EnumCalendarDayItemPosition.Relative,
       title: "Randevu",
       color: "teal",
-      zIndex: 1,
+      zIndex: 5,
       isResizable: true,
       isDraggable: true,
     },
     {
       id: 120,
-      from: "12:00",
-      to: "12:40",
+      from: "10:00",
+      to: "11:40",
       position: EnumCalendarDayItemPosition.Relative,
       title: "Randevu",
       color: "pink",
-      zIndex: 1,
+      zIndex: 5,
       isResizable: true,
       isDraggable: true,
     },

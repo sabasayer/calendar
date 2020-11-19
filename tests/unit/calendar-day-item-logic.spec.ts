@@ -166,6 +166,7 @@ describe("Calendar Day Item Logic", () => {
     expect(isCollides).toBe(true);
   });
 
+
   it("should calculate width of item", () => {
     let item: CalendarDayItemPosition = {
       order: 1,
