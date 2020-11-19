@@ -59,6 +59,7 @@ import {
 import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarItemComponent from "@/components/item/CalendarItem.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
+import { CalendarDayEventOptions } from "../types/calendar-day-event-options";
 
 @Component({
   components: {
@@ -128,7 +129,12 @@ export default class CalendarHoursContainerComponent extends Mixins(
   itemClick(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
-    this.$emit("item-click", { item, collidedItems, el });
+    const options: CalendarDayEventOptions = {
+      item,
+      collidedItems,
+      el,
+    };
+    this.$emit("item-click", options);
     this.clearClone();
   }
 
@@ -136,14 +142,25 @@ export default class CalendarHoursContainerComponent extends Mixins(
     const collidedItems = this.filterCollidedItems(item);
     const blockingCollidedItems = this.filterBlockingCollidedItems(item);
 
-    this.$emit("item-drop", { item, collidedItems, blockingCollidedItems, el });
+    const options: CalendarDayEventOptions = {
+      item,
+      collidedItems,
+      blockingCollidedItems,
+      el,
+    };
+    this.$emit("item-drop", options);
     this.clearClone();
   }
 
   resize(item: CalendarDayItem, el: HTMLElement) {
     const collidedItems = this.filterCollidedItems(item);
 
-    this.$emit("item-resize", { item, collidedItems, el });
+    const options: CalendarDayEventOptions = {
+      item,
+      collidedItems,
+      el,
+    };
+    this.$emit("item-resize", options);
     this.clearClone();
   }
 

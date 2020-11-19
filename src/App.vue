@@ -3,6 +3,7 @@
     <calendar-day
       @item-click="itemClicked"
       @item-drop="itemDrop"
+      @item-resize="itemResize"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
@@ -19,6 +20,7 @@ import CalendarDayComponent from "./components/CalendarDay.vue";
 import { EnumCalendarDayItemPosition } from "./logic/statics/calendar-day-item-position.enum";
 import { CalendarDayItem } from "./logic/types/calendar-day-item";
 import { CalendarEvent } from "./logic/types/calendar-event";
+import { CalendarDayEventOptions } from "./components/types/calendar-day-event-options";
 
 @Component({
   components: {
@@ -78,20 +80,28 @@ export default class App extends Vue {
     },
   ];
 
-  itemClicked(options: {
-    item: CalendarDayItem;
-    collidedItems: CalendarDayItem[];
-    element: HTMLElement;
-  }) {
+  itemClicked(options: CalendarDayEventOptions) {
     console.info("item clicked", options.item);
   }
 
-  itemDrop(options: {
-    item: CalendarDayItem;
-    collidedItems: CalendarDayItem[];
-    collidedBlockingItems: CalendarDayItem[];
-    element: HTMLElement;
-  }) {}
+  itemDrop(options: CalendarDayEventOptions) {
+    this.updateEvent(options);
+  }
+
+  itemResize(options: CalendarDayEventOptions) {
+    this.updateEvent(options);
+  }
+
+  updateEvent(options: CalendarDayEventOptions) {
+    if (options.blockingCollidedItems?.length) return;
+
+    let event = this.events.find((e) => e.id === options.item.id);
+
+    if (!event) return;
+
+    event.to = options.item.to;
+    event.from = options.item.from;
+  }
 }
 </script>
 

@@ -8,7 +8,10 @@
   >
     <div class="calendar-item__content">
       <slot>
-        <span>{{ item.title }}</span>
+        <div>
+          <div>{{ item.title }}</div>
+          <div>{{ item.from }} - {{ item.to }}</div>
+        </div>
       </slot>
 
       <vertical-resize-handler
@@ -49,6 +52,10 @@ import { resizeLogic } from "@/logic/resize.logic";
 export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   @Prop({ type: Boolean, default: false }) readonly isGhost: boolean;
 
+  get isChanging() {
+    return this._isCloneVisible && this._cloneItem.id === this.item.id;
+  }
+
   get topOffset() {
     return this._isCloneVisible
       ? this._cloneItem.topOffset + this._cloneItem.height
@@ -73,8 +80,10 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     return {
       bordered: this.item.isBordered,
       clickable: this.item.isClickable,
+      draggable: this.item.isDraggable,
       ghost: this.isGhost,
       "cannot-drop": this.item.cannotDrop,
+      changing: this.isChanging,
     };
   }
 
@@ -135,6 +144,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   position: absolute;
   box-sizing: border-box;
   overflow: hidden;
+  font-size: 0.75rem;
   .calendar-item__content {
     padding: 0.25rem;
     position: relative;
@@ -144,7 +154,8 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   &.bordered {
     border-left: 5px solid;
   }
-  &.clickable {
+  &.clickable,
+  &.draggable {
     cursor: pointer;
     &:hover {
       opacity: 0.9;
@@ -153,10 +164,14 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   &.ghost {
     outline: 2px solid steelblue;
     border: 2px solid white;
+    cursor: move;
     &.cannot-drop {
       outline-color: red;
       cursor: no-drop;
     }
+  }
+  &.changing {
+    opacity: 0.5;
   }
 }
 </style>
