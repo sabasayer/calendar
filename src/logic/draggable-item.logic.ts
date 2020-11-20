@@ -12,6 +12,7 @@ class DraggableItemLogic {
     const heightPerMinute = calendarDayItemLogic.calculateHeightPerMinute(
       options.hourHeight
     );
+
     const minuteHeight = heightPerMinute * options.minuteInterval;
 
     const remaining = options.topOffset % minuteHeight;

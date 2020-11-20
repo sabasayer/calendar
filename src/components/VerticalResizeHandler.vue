@@ -16,7 +16,7 @@ export default class VerticalResizeHandlerComponent extends Mixins(
   @Prop({ type: Number, required: true }) readonly hourHeight: number;
 
   mouseDown(ev: MouseEvent) {
-    this.calculateFirstTopOffset(ev, this.topOffset);
+    this.calculateMouseFirstTopOffset(ev, this.topOffset);
     this.resizeStart();
     this.createMouseMoveListener();
     this.createMouseUpListener();
@@ -36,18 +36,14 @@ export default class VerticalResizeHandlerComponent extends Mixins(
   calculateNewTopOffset(pageY: number) {
     let newTopOffset = draggableItemLogic.calculateNewTop(
       pageY,
-      this.firstTopOffset
+      this.mouseFirstTopOffset
     );
 
-    newTopOffset = draggableItemLogic.snapToMinute({
+    return draggableItemLogic.snapToMinute({
       topOffset: newTopOffset,
       minuteInterval: this.minuteInterval,
       hourHeight: this.hourHeight,
     });
-
-    console.log({ newTopOffset }, this.minTopOffset);
-
-    return newTopOffset;
   }
 
   mouseUp() {

@@ -14,6 +14,7 @@
         @item-click="itemClick"
         @item-drop="itemDrop"
         @item-resize="itemResize"
+        @area-select="areaSelect"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -21,6 +22,10 @@
         :horizontal-margin-between-items="horizontalMarginBetweenItems"
         :minute-interval="minuteInterval"
         :hour-padding-right="hourPaddingRight"
+        :is-minutes-clickable="isMinutesClickable"
+        :is-area-selectable="isAreaSelectable"
+        :is-actions-disabled="isActionsDisabled"
+        :new-item-position="newItemPosition"
       >
         <template #minute="{ minute, hour }">
           <slot name="minute" :minute="minute" :hour="hour"></slot>
@@ -43,6 +48,7 @@ import CalendarDayFooterComponent from "./CalendarDayFooter.vue";
 import CalendarDayHeaderComponent from "./CalendarDayHeader.vue";
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
 import { CalendarEvent } from "@/logic/types/calendar-event";
+import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
 
 @Component({
   components: {
@@ -67,6 +73,11 @@ export default class CalendarDayComponent extends Vue {
   @Prop({ type: Number, default: 30 }) readonly minuteInterval: number;
   @Prop({ type: Number, default: 20 })
   readonly hourPaddingRight: number;
+  @Prop({ type: Boolean, default: false }) readonly isActionsDisabled: boolean;
+  @Prop({ type: Boolean, default: false }) readonly isMinutesClickable: boolean;
+  @Prop({ type: Boolean, default: false }) readonly isAreaSelectable: boolean;
+  @Prop({ default: EnumCalendarDayItemPosition.Relative })
+  readonly newItemPosition: EnumCalendarDayItemPosition;
 
   @Emit()
   itemClick() {}
@@ -76,6 +87,9 @@ export default class CalendarDayComponent extends Vue {
 
   @Emit()
   itemResize() {}
+
+  @Emit()
+  areaSelect() {}
 }
 </script>
 <style scoped>

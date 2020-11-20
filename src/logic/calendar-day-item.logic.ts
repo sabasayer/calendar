@@ -7,9 +7,11 @@ import {
 } from "./types/calendar-day-item";
 
 class CalendarDayItemLogic {
+  readonly defaultItemColor:string ="rgba(255,255,255,0.5)";
+
   createDefaultModel = (): CalendarDayItem => ({
     id: 0,
-    color: "",
+    color: this.defaultItemColor,
     from: "",
     to: "",
     height: 0,

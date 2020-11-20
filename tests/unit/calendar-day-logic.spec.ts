@@ -319,7 +319,7 @@ describe("Calendar Day Logic", () => {
       position: EnumCalendarDayItemPosition.Absolute,
       title: "",
       to: "",
-      cannotDrop:false
+      cannotDrop: false,
     };
 
     const allItems: CalendarDayItem[] = [
@@ -399,7 +399,7 @@ describe("Calendar Day Logic", () => {
       { id: 4, position: EnumCalendarDayItemPosition.Static, topOffset: 212 },
     ];
 
-    const blockingPosition = calendarDayLogic.findClosestBlockingPosition(
+    const blockingPosition = calendarDayLogic.findClosestBlockingPositionBelow(
       item,
       items
     );

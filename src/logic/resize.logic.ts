@@ -58,18 +58,19 @@ class ResizeLogic {
     item: Pick<CalendarDayItem, "id" | "topOffset" | "height">,
     positions: Pick<CalendarDayItem, "id" | "topOffset">[]
   ): number {
-    const bottom = draggableItemLogic.calculateBottom(
+    const itemBottom = draggableItemLogic.calculateBottom(
       item.topOffset,
       item.height
     );
 
-    const blockingPositionsBelow = positions
-      .filter((e) => e.id != item.id && e.topOffset > bottom)
-      .map((e) => e.topOffset);
+    let bottom = 0;
 
-    return blockingPositionsBelow.length
-      ? Math.min(...blockingPositionsBelow)
-      : 0;
+    positions.forEach((position) => {
+      if (position.id != item.id && itemBottom <= position.topOffset)
+        bottom = Math.min(position.topOffset, bottom || position.topOffset);
+    });
+
+    return bottom;
   }
 }
 

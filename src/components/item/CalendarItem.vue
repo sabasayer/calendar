@@ -140,6 +140,8 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
 }
 </script>
 <style scoped lang="scss">
+@import "@/style/definitions.scss";
+
 .calendar-item {
   position: absolute;
   box-sizing: border-box;
@@ -156,15 +158,13 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   }
   &.clickable,
   &.draggable {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.9;
-    }
+    @include clickable;
   }
   &.ghost {
     outline: 2px solid steelblue;
     border: 2px solid white;
     cursor: move;
+    z-index: 20 !important;
     &.cannot-drop {
       outline-color: red;
       cursor: no-drop;

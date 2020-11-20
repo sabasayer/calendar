@@ -3,10 +3,10 @@ import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class DragTrackerMixin extends Vue {
-  firstTopOffset: number = 0;
+  mouseFirstTopOffset: number = 0;
 
-  calculateFirstTopOffset(ev: MouseEvent,topOffset:number) {
-    this.firstTopOffset = draggableItemLogic.calculateRelativeTop(
+  calculateMouseFirstTopOffset(ev: MouseEvent,topOffset:number) {
+    this.mouseFirstTopOffset = draggableItemLogic.calculateRelativeTop(
       ev.pageY,
       topOffset
     );

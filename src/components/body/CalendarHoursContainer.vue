@@ -6,13 +6,23 @@
       class="calendar-hour"
       :style="computedStyle"
     >
-      <div
+      <calendar-minute
         v-for="minute in minutes(hour.value)"
+        @select-area="selectArea"
+        @select-area-finish="selectAreaFinished"
         :key="`${hour.value}_${minute.text}`"
+        :minute="minute"
+        :is-clickable="isMinutesClickable"
+        :is-area-selectable="isAreaSelectable"
+        :start-time="startTime"
+        :hour-height="hourHeight"
+        :minute-interval="minuteInterval"
+        :disabled="isActionsDisabled"
+        :new-item-position="newItemPosition"
         class="calendar-hour__minute"
       >
         <slot name="minute" :minute="minute" :hour="hour"></slot>
-      </div>
+      </calendar-minute>
     </div>
 
     <calendar-item
@@ -60,10 +70,13 @@ import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarItemComponent from "@/components/item/CalendarItem.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { CalendarDayEventOptions } from "../types/calendar-day-event-options";
+import CalendarMinuteComponent from "./CalendarMinute.vue";
+import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
 
 @Component({
   components: {
     "calendar-item": CalendarItemComponent,
+    "calendar-minute": CalendarMinuteComponent,
   },
 })
 export default class CalendarHoursContainerComponent extends Mixins(
@@ -74,6 +87,11 @@ export default class CalendarHoursContainerComponent extends Mixins(
   readonly horizontalMarginBetweenItems!: number;
   @Prop({ type: Number, default: 20 })
   readonly hourPaddingRight: number;
+  @Prop({ type: Boolean, default: false }) readonly isActionsDisabled: boolean;
+  @Prop({ type: Boolean, default: false }) readonly isMinutesClickable: boolean;
+  @Prop({ type: Boolean, default: false }) readonly isAreaSelectable: boolean;
+  @Prop({ default: EnumCalendarDayItemPosition.Relative })
+  readonly newItemPosition: EnumCalendarDayItemPosition;
 
   items: CalendarDayItem[] = [];
 
@@ -94,12 +112,16 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.createItems();
   }
 
-  createItems() {
+  calculateAvailableWidth(): number {
     const containerWidth = this.getContainerWidth();
 
-    if (!containerWidth) return;
+    if (!containerWidth) return 0;
 
-    const availableWidth = containerWidth - this.hourPaddingRight;
+    return containerWidth - this.hourPaddingRight;
+  }
+
+  createItems() {
+    const availableWidth = this.calculateAvailableWidth();
 
     this.items = calendarDayLogic.createItems({
       events: this.events,
@@ -112,6 +134,10 @@ export default class CalendarHoursContainerComponent extends Mixins(
 
   clearClone() {
     this.cloneItem = calendarDayItemLogic.createDefaultModel();
+  }
+
+  hideClone() {
+    this.isCloneVisible = false;
   }
 
   getContainerWidth() {
@@ -171,6 +197,28 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.$emit("item-resize", options);
     this.clearClone();
   }
+
+  selectArea(item: CalendarDayItem) {
+    const availableWidth = this.calculateAvailableWidth();
+
+    item.width = availableWidth;
+
+    this.cloneItem = item;
+    this.isCloneVisible = true;
+    console.log("area selected", item);
+  }
+
+  selectAreaFinished(item: CalendarDayItem) {
+    const collidedItems = this.filterCollidedItems(item);
+
+    const options: CalendarDayEventOptions = {
+      item,
+      collidedItems,
+    };
+    this.$emit("area-select", options);
+    this.clearClone();
+    this.hideClone();
+  }
 }
 </script>
 <style scoped lang="scss">
@@ -184,14 +232,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     border-bottom: 1px solid $border-color;
     display: flex;
     flex-direction: column;
-
-    .calendar-hour__minute {
-      flex: 1;
-      box-sizing: border-box;
-      &:not(:last-child) {
-        border-bottom: 1px dashed $border-color-soft;
-      }
-    }
   }
 }
 </style>

@@ -2,15 +2,17 @@ import { resizeLogic } from "@/logic/resize.logic";
 import { CalendarDayItem } from "@/logic/types/calendar-day-item";
 
 describe("Resize Logic", () => {
-    it("should find minimum value for bottomLimit",() => {
-        const closestBlockingPosition = 120;
-        const containerHeight = 210;
+  it("should find minimum value for bottomLimit", () => {
+    const closestBlockingPosition = 120;
+    const containerHeight = 210;
 
-        const bottomLimit = resizeLogic.calculateBottomLimit(containerHeight,closestBlockingPosition);
+    const bottomLimit = resizeLogic.calculateBottomLimit(
+      containerHeight,
+      closestBlockingPosition
+    );
 
-        expect(bottomLimit).toBe(120)
-    })
-    
+    expect(bottomLimit).toBe(120);
+  });
 
   it("should fix height by container", () => {
     const topOffset = 150;
@@ -46,6 +48,7 @@ describe("Resize Logic", () => {
     expect(fixedHeight).toBe(40);
   });
 
+  
   it("should find closest top position below", () => {
     const item: Pick<CalendarDayItem, "id" | "topOffset" | "height"> = {
       id: 99,

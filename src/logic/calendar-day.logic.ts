@@ -105,7 +105,7 @@ class CalendarDayLogic {
 
     items.forEach(
       (item) =>
-        (item.closestBlockingPosition = this.findClosestBlockingPosition(
+        (item.closestBlockingPosition = this.findClosestBlockingPositionBelow(
           item,
           items
         ))
@@ -136,7 +136,7 @@ class CalendarDayLogic {
     );
   }
 
-  findClosestBlockingPosition(
+  findClosestBlockingPositionBelow(
     item: Pick<CalendarDayItem, "id" | "position" | "topOffset" | "height">,
     items: Pick<CalendarDayItem, "id" | "position" | "topOffset">[]
   ): number {

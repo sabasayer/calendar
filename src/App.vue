@@ -4,12 +4,14 @@
       @item-click="itemClicked"
       @item-drop="itemDrop"
       @item-resize="itemResize"
+      @area-select="areaSelect"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
       :hour-height="hourHeight"
       :minute-interval="minuteInterval"
       :hour-padding-right="20"
+      :is-area-selectable="true"
     />
   </div>
 </template>
@@ -34,7 +36,6 @@ export default class App extends Vue {
   minuteInterval = 20;
 
   events: CalendarEvent[] = [
-  
     {
       id: 1,
       from: "08:00",
@@ -91,6 +92,22 @@ export default class App extends Vue {
 
   itemResize(options: CalendarDayEventOptions) {
     this.updateEvent(options);
+  }
+
+  areaSelect(options: CalendarDayEventOptions) {
+    options.item.id = Math.random();
+    this.createEvent(options);
+  }
+
+  createEvent(options: CalendarDayEventOptions) {
+    if (options.blockingCollidedItems?.length) return;
+
+    let event = options.item;
+    event.isDraggable = true;
+    event.isResizable = true;
+    event.color = "orange";
+    event.id = Math.random();
+    this.events.push(event);
   }
 
   updateEvent(options: CalendarDayEventOptions) {

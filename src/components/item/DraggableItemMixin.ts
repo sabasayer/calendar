@@ -26,7 +26,7 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   mouseDown(ev: MouseEvent) {
     if (!this.item.isDraggable) return;
 
-    this.calculateFirstTopOffset(ev, this.item.topOffset);
+    this.calculateMouseFirstTopOffset(ev, this.item.topOffset);
     this.createClone();
     this.createMouseMoveListener();
     this.createMouseUpListener();
@@ -56,7 +56,7 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   calculateNewTopOffset(pageY: number) {
     let newTopOffset = draggableItemLogic.calculateNewTop(
       pageY,
-      this.firstTopOffset
+      this.mouseFirstTopOffset
     );
 
     newTopOffset = draggableItemLogic.snapToMinute({
