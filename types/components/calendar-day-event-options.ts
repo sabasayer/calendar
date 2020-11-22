@@ -1,4 +1,4 @@
-import { CalendarDayItem } from '@/logic/types/calendar-day-item';
+import { CalendarDayItem } from '../logic/calendar-day-item';
 
 export type CalendarDayEventOptions = {
     item:CalendarDayItem,

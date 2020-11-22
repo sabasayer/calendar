@@ -1,13 +1,13 @@
 import cloneDeep from "lodash.clonedeep";
-import { EnumCalendarDayItemPosition } from "./statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 import { timeLogic } from "./time.logic";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "./types/calendar-day-item";
+} from "../../types/logic/calendar-day-item";
 
 class CalendarDayItemLogic {
-  readonly defaultItemColor:string ="rgba(255,255,255,0.5)";
+  readonly defaultItemColor: string = "rgba(255,255,255,0.5)";
 
   createDefaultModel = (): CalendarDayItem => ({
     id: 0,

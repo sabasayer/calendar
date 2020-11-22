@@ -1,10 +1,10 @@
 import { calendarDayLogic } from "@/logic/calendar-day.logic";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "@/logic/types/calendar-day-item";
-import { CalendarEvent } from "@/logic/types/calendar-event";
+} from "types/logic/calendar-day-item";
+import { CalendarEvent } from "types/logic/calendar-event";
 
 describe("Calendar Day Logic", () => {
   it("should create item from options with vertical positions", () => {

@@ -1,10 +1,10 @@
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 import { timeLogic } from "@/logic/time.logic";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "@/logic/types/calendar-day-item";
+} from "types/logic/calendar-day-item";
 
 describe("Calendar Day Item Logic", () => {
   it("should calculate height per minute", () => {

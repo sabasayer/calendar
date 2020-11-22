@@ -1,5 +1,5 @@
 import { calendarDayItemLogic } from "./calendar-day-item.logic";
-import { CalendarDayItem } from "./types/calendar-day-item";
+import { CalendarDayItem } from "../../types/logic/calendar-day-item";
 
 import cloneDeep from "lodash/cloneDeep";
 

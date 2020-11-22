@@ -3,7 +3,7 @@ import { draggableItemLogic } from "./draggable-item.logic";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "./types/calendar-day-item";
+} from "../../types/logic/calendar-day-item";
 
 class AreaSelectLogic {
   calculatePositions(
@@ -22,8 +22,9 @@ class AreaSelectLogic {
   findLimits(options: {
     currentPosition: number;
     items: Pick<CalendarDayItem, "topOffset" | "height">[];
+    containerHeight: number;
   }): { top: number; bottom: number } {
-    const { currentPosition, items } = options;
+    const { currentPosition, items, containerHeight } = options;
 
     let top = 0;
     let bottom = 0;
@@ -38,7 +39,51 @@ class AreaSelectLogic {
         bottom = Math.min(item.topOffset, bottom || item.topOffset);
     });
 
+    bottom = Math.min(containerHeight, bottom || containerHeight);
+
     return { top, bottom };
+  }
+
+  isHeightValid(options: {
+    firstTopOffset: number;
+    newTopOffset: number;
+    minuteHeight: number;
+  }): boolean {
+    const positions = areaSelectLogic.calculatePositions(
+      options.newTopOffset,
+      options.firstTopOffset
+    );
+
+    return positions.height >= options.minuteHeight;
+  }
+
+  isNewTopOffsetValid(options: {
+    newTopOffset: number;
+    lastTopOffset: number;
+    firstTopOffset: number;
+    minuteHeight: number;
+    limits: {
+      top: number;
+      bottom: number;
+    };
+  }): boolean {
+    const isHeightValid = this.isHeightValid(options);
+
+    if (!isHeightValid) return false;
+
+    const positions = areaSelectLogic.calculatePositions(
+      options.newTopOffset,
+      options.firstTopOffset
+    );
+
+    const isTopOffLimits = positions.topOffset < options.limits.top;
+    const isBottomOffLimits =
+      draggableItemLogic.calculateBottom(
+        positions.topOffset,
+        positions.height
+      ) > options.limits.bottom;
+
+    return !isTopOffLimits && !isBottomOffLimits;
   }
 }
 

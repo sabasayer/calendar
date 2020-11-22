@@ -1,11 +1,10 @@
 import { calendarDayItemLogic } from "./calendar-day-item.logic";
 import { resizeLogic } from "./resize.logic";
-import { EnumCalendarDayItemPosition } from "./statics/calendar-day-item-position.enum";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "./types/calendar-day-item";
-import { CalendarEvent } from "./types/calendar-event";
+} from "../../types/logic/calendar-day-item";
+import { CalendarEvent } from "../../types/logic/calendar-event";
 
 class CalendarDayLogic {
   createItemWithVerticalPositions(options: {

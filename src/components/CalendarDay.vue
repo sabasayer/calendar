@@ -46,9 +46,9 @@ import CalendarHourHeadersComponent from "./body/CalendarHourHeaders.vue";
 import CalendarHoursContainerComponent from "./body/CalendarHoursContainer.vue";
 import CalendarDayFooterComponent from "./CalendarDayFooter.vue";
 import CalendarDayHeaderComponent from "./CalendarDayHeader.vue";
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { CalendarEvent } from "@/logic/types/calendar-event";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
+import { CalendarDayItem } from "../../types/logic/calendar-day-item";
+import { CalendarEvent } from "../../types/logic/calendar-event";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 
 @Component({
   components: {

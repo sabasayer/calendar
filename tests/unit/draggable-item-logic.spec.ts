@@ -1,6 +1,6 @@
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
+import { CalendarDayItem } from "types/logic/calendar-day-item";
 
 describe("Draggable Item Logic", () => {
   it("should snap position to prev minuteInterval", () => {

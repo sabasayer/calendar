@@ -1,4 +1,4 @@
-import { EnumCalendarDayItemPosition } from '@/logic/statics/calendar-day-item-position.enum';
+import { EnumCalendarDayItemPosition } from '../statics/calendar-day-item-position.enum';
 
 interface CalendarEvent<T = undefined>  {
     id:string|number

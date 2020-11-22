@@ -19,10 +19,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CalendarDayComponent from "./components/CalendarDay.vue";
-import { EnumCalendarDayItemPosition } from "./logic/statics/calendar-day-item-position.enum";
-import { CalendarDayItem } from "./logic/types/calendar-day-item";
-import { CalendarEvent } from "./logic/types/calendar-event";
-import { CalendarDayEventOptions } from "./components/types/calendar-day-event-options";
+import { EnumCalendarDayItemPosition } from "../types/statics/calendar-day-item-position.enum";
+import { CalendarDayItem } from "../types/logic/calendar-day-item";
+import { CalendarEvent } from "../types/logic/calendar-event";
+import { CalendarDayEventOptions } from '../types/components/calendar-day-event-options';
 
 @Component({
   components: {

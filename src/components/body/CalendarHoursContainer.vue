@@ -15,10 +15,12 @@
         :is-clickable="isMinutesClickable"
         :is-area-selectable="isAreaSelectable"
         :start-time="startTime"
+        :end-time="endTime"
         :hour-height="hourHeight"
         :minute-interval="minuteInterval"
         :disabled="isActionsDisabled"
         :new-item-position="newItemPosition"
+        :items="items"
         class="calendar-hour__minute"
       >
         <slot name="minute" :minute="minute" :hour="hour"></slot>
@@ -55,8 +57,8 @@
 </template>
 <script lang="ts">
 import { calendarDayLogic } from "@/logic/calendar-day.logic";
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { CalendarEvent } from "@/logic/types/calendar-event";
+import { CalendarDayItem } from "types/logic/calendar-day-item";
+import { CalendarEvent } from "types/logic/calendar-event";
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
 import {
   Component,
@@ -69,9 +71,9 @@ import {
 import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarItemComponent from "@/components/item/CalendarItem.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
-import { CalendarDayEventOptions } from "../types/calendar-day-event-options";
+import { CalendarDayEventOptions } from "../../../types/components/calendar-day-event-options";
 import CalendarMinuteComponent from "./CalendarMinute.vue";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../../types/statics/calendar-day-item-position.enum";
 
 @Component({
   components: {

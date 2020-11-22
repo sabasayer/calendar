@@ -1,58 +1,48 @@
 {
   "name": "@sabasayer/calendar",
-  "version": "1.0.0",
-  "private": true,
+  "version": "1.0.5",
+  "author": "Salih Baki Sayer",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "build-lib": "vue-cli-service build --target lib --name calendar ./src/components/index.ts",
     "build-modern": "vue-cli-service build --modern",
     "build-modern-lib": "vue-cli-service build --modern --target lib --name calendar ./src/components/index.ts",
     "build-modern-wc": "vue-cli-service build --modern --target wc --name calendar ./src/components/*.vue",
     "build-modern-wc-async": "vue-cli-service build --modern --target wc-async --name calendar ./src/components/*.vue",
-    "build-lib": "vue-cli-service build --target lib --name calendar ./src/components/index.ts",
     "build-wc": "vue-cli-service build --target wc --name calendar ./src/components/*.vue",
     "build-wc-async": "vue-cli-service build --target wc-async --name calendar ./src/components/*.vue"
   },
   "main": "./dist/calendar.common.js",
   "unpkg": "./dist/calendar.umd.min.js",
-  "dependencies": {
-    "vue": "^2.6.11",
-    "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^8.4.2",
-    "lodash.clonedeep": "4.5.0"
-  },
   "files": [
     "dist/*",
     "src/*",
-    "public/*",
     "*.json",
     "*.js",
     "types/*"
   ],
-  "author": "Salih Baki Sayer",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sabasayer/calendar.git"
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "lodash.clonedeep": "4.5.0",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2"
   },
-  "types": "src/logic/types/index.d.ts",
-  "homepage": "https://github.com/sabasayer/calendar#readme",
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.19",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-unit-jest": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/test-utils": "^1.0.3",
     "@types/lodash.clonedeep": "4.5.3",
+    "@vue/cli-plugin-babel": "^4.5.9",
+    "@vue/cli-plugin-typescript": "^4.5.9",
+    "@vue/cli-plugin-unit-jest": "^4.5.9",
+    "@vue/cli-service": "~4.5.9",
+    "@vue/test-utils": "^1.1.1",
     "node-sass": "^4.12.0",
+    "prettier": "2.1.2",
     "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue-template-compiler": "^2.6.11",
-    "prettier": "2.1.2"
-  },
-  "_moduleAliases": {
-    "@": "dist"
+    "typescript": "^4.1.0",
+    "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
     "> 1%",
@@ -61,5 +51,15 @@
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest/presets/typescript"
-  }
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "homepage": "https://github.com/sabasayer/calendar#readme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sabasayer/calendar.git"
+  },
+  "types": "types/components/index.d.ts"
 }

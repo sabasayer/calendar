@@ -1,5 +1,5 @@
 import { timeLogic } from "@/logic/time.logic";
-import { TimeSpan } from "@/logic/types/time-span";
+import { TimeSpan } from "types/logic/time-span";
 
 describe("TimeLogic", () => {
   it("should create two digit text", () => {

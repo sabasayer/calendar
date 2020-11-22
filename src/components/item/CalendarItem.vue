@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
+import { CalendarDayItem } from "types/logic/calendar-day-item";
 import {
   Vue,
   Component,

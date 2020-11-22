@@ -1,5 +1,5 @@
 import { resizeLogic } from "@/logic/resize.logic";
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
+import { CalendarDayItem } from "../../types/logic/calendar-day-item";
 
 describe("Resize Logic", () => {
   it("should find minimum value for bottomLimit", () => {

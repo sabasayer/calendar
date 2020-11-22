@@ -1,6 +1,6 @@
 import { calendarDayItemLogic } from "./calendar-day-item.logic";
 import { draggableItemLogic } from "./draggable-item.logic";
-import { CalendarDayItem } from "./types/calendar-day-item";
+import { CalendarDayItem } from "../../types/logic/calendar-day-item";
 
 class ResizeLogic {
   calculateBottomLimit(

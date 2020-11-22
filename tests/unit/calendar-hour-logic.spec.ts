@@ -1,5 +1,5 @@
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
-import { MinuteInterval } from "@/logic/types/minute-interval";
+import { MinuteInterval } from "types/logic/minute-interval";
 
 describe("Calendar Hour Logic", () => {
   it("should create hours array between two timeSpan", () => {

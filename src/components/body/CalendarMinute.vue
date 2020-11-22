@@ -12,13 +12,15 @@
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import { timeLogic } from "@/logic/time.logic";
-import { CalendarDayItem } from "@/logic/types/calendar-day-item";
-import { CalendarHour } from "@/logic/types/calendar-hour";
-import { MinuteInterval } from "@/logic/types/minute-interval";
+import { CalendarDayItem } from "types/logic/calendar-day-item";
+import { CalendarHour } from "types/logic/calendar-hour";
+import { MinuteInterval } from "types/logic/minute-interval";
 import { Vue, Component, Prop, Mixins, Emit } from "vue-property-decorator";
 import DragTrackerMixin from "../DragTrackerMixin";
 import { areaSelectLogic } from "@/logic/area-select.logic";
-import { EnumCalendarDayItemPosition } from "@/logic/statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../../types/statics/calendar-day-item-position.enum";
+import { resizeLogic } from "@/logic/resize.logic";
+import { calendarDayLogic } from "@/logic/calendar-day.logic";
 
 @Component
 export default class CalendarMinuteComponent extends Mixins(DragTrackerMixin) {
@@ -27,13 +29,20 @@ export default class CalendarMinuteComponent extends Mixins(DragTrackerMixin) {
   @Prop({ type: Boolean, default: false }) readonly isAreaSelectable: boolean;
   @Prop({ type: Boolean, default: false }) readonly disabled: boolean;
   @Prop({ required: true, type: String }) readonly startTime: string;
+  @Prop({ required: true, type: String }) readonly endTime: string;
   @Prop({ required: true, type: Number }) readonly hourHeight: number;
   @Prop({ required: true, type: Number }) readonly minuteInterval: number;
   @Prop({ default: EnumCalendarDayItemPosition.Relative })
   readonly newItemPosition: EnumCalendarDayItemPosition;
+  @Prop({ required: true }) readonly items: CalendarDayItem[];
 
   lastTopOffset: number = 0;
   isSelecting: boolean = false;
+
+  limits: { top: number; bottom: number } = {
+    top: 0,
+    bottom: 0,
+  };
 
   get topOffset() {
     return calendarDayItemLogic.calculateDistance({
@@ -55,9 +64,35 @@ export default class CalendarMinuteComponent extends Mixins(DragTrackerMixin) {
     this.$emit("click", this.minute);
   }
 
+  minuteHeight() {
+    return this.$el.clientHeight ?? 0;
+  }
+
+  calculateLimits() {
+    const containerHeight = calendarDayItemLogic.calculateDistance({
+      from: this.startTime,
+      to: this.endTime,
+      hourHeight: this.hourHeight,
+    });
+
+    const blockingItems = calendarDayLogic.filterBlockingItems(
+      { id: 0, position: this.newItemPosition } as CalendarDayItem,
+      this.items
+    );
+
+    console.log({ blockingItems });
+
+    this.limits = areaSelectLogic.findLimits({
+      containerHeight,
+      currentPosition: this.topOffset,
+      items: blockingItems,
+    });
+  }
+
   mouseDown(ev: MouseEvent) {
     if (this.disabled || !this.isAreaSelectable) return;
 
+    this.calculateLimits();
     this.calculateMouseFirstTopOffset(ev, this.topOffset);
     this.createMouseMoveListener();
     this.createMouseUpListener();
@@ -77,18 +112,21 @@ export default class CalendarMinuteComponent extends Mixins(DragTrackerMixin) {
   }
 
   isNewTopOffsetValid(newTopOffset: number) {
-    return (
-      newTopOffset != this.topOffset &&
-      this.lastTopOffset != newTopOffset &&
-      this.isHeightValid(newTopOffset)
-    );
+    return areaSelectLogic.isNewTopOffsetValid({
+      newTopOffset,
+      lastTopOffset: this.lastTopOffset,
+      firstTopOffset: this.topOffset,
+      minuteHeight: this.minuteHeight(),
+      limits: this.limits,
+    });
   }
 
   isHeightValid(newTopOffset: number) {
-    return (
-      areaSelectLogic.calculatePositions(newTopOffset, this.topOffset).height >=
-      this.minuteInterval
-    );
+    return areaSelectLogic.isHeightValid({
+      firstTopOffset: this.topOffset,
+      newTopOffset,
+      minuteHeight: this.minuteHeight(),
+    });
   }
 
   calculateNewTopOffset(pageY: number) {
