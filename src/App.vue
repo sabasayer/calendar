@@ -13,6 +13,7 @@
       :hour-padding-right="20"
       :is-area-selectable="true"
       :is-minutes-visible="false"
+      has-header
       header="First Day"
     />
   </div>

@@ -97,6 +97,9 @@ export default class CalendarDayComponent extends Vue {
 }
 </script>
 <style scoped>
+.calendar-day{
+  background-color: white;
+}
 .calendar-day__body {
   display: flex;
 }

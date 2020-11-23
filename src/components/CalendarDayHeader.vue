@@ -20,7 +20,11 @@ export default class CalendarDayHeaderComponent extends Vue {
   text-align: center;
   font-weight: 600;
   font-size: 1rem;
-  border-bottom:1px solid $border-color;
-  padding:.5rem;
+  border-bottom: 1px solid $border-color;
+  padding: 0.5rem;
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 30;
 }
 </style>
