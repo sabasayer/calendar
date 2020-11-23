@@ -9,7 +9,7 @@ export default class CalendarDayComponent extends Vue {
     readonly hourHeight: number;
     readonly isHoursVisible: boolean;
     readonly isMinutesVisible: boolean;
-    readonly Header?: string;
+    readonly header?: string;
     readonly events: CalendarEvent[];
     readonly horizontalMarginBetweenItems: number;
     readonly minuteInterval: number;

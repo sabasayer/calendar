@@ -1,6 +1,8 @@
 <template>
   <div class="calendar-day">
-    <calendar-day-header />
+    <calendar-day-header :header="header">
+      <slot name="header"></slot>
+    </calendar-day-header>
 
     <div class="calendar-day__body">
       <calendar-hour-headers
@@ -65,7 +67,7 @@ export default class CalendarDayComponent extends Vue {
   @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
   @Prop({ type: Boolean, default: false }) readonly isHoursVisible: boolean;
   @Prop({ type: Boolean, default: false }) readonly isMinutesVisible: boolean;
-  @Prop({ type: String }) readonly Header?: string;
+  @Prop({ type: String }) readonly header?: string;
   @Prop({ required: true, default: () => [] })
   readonly events: CalendarEvent[];
   @Prop({ type: Number, default: 4 })
