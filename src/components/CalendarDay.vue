@@ -1,15 +1,17 @@
 <template>
   <div class="calendar-day">
-    <calendar-day-header :header="header">
+    <calendar-day-header v-if="hasHeader" :header="header">
       <slot name="header"></slot>
     </calendar-day-header>
 
     <div class="calendar-day__body">
       <calendar-hour-headers
+        v-if="isHoursVisible"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
         :minute-interval="minuteInterval"
+        :is-minutes-visible="isMinutesVisible"
       />
 
       <calendar-hours-container
@@ -65,8 +67,8 @@ export default class CalendarDayComponent extends Vue {
   @Prop({ type: String, default: "00:00" }) readonly startTime?: string;
   @Prop({ type: String, default: "23:00" }) readonly endTime?: string;
   @Prop({ type: Number, default: 100 }) readonly hourHeight: number;
-  @Prop({ type: Boolean, default: false }) readonly isHoursVisible: boolean;
-  @Prop({ type: Boolean, default: false }) readonly isMinutesVisible: boolean;
+  @Prop({ type: Boolean, default: true }) readonly isHoursVisible: boolean;
+  @Prop({ type: Boolean, default: true }) readonly isMinutesVisible: boolean;
   @Prop({ type: String }) readonly header?: string;
   @Prop({ required: true, default: () => [] })
   readonly events: CalendarEvent[];

@@ -12,6 +12,7 @@
       :minute-interval="minuteInterval"
       :hour-padding-right="20"
       :is-area-selectable="true"
+      :is-minutes-visible="false"
       header="First Day"
     />
   </div>

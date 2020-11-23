@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar-hour-headers">
+  <div class="calendar-hour-headers" :class="computedClass">
     <div
       v-for="hour in hours"
       :key="hour.value"
@@ -7,7 +7,11 @@
       :style="computedStyle"
     >
       <div class="calendar-hour-header__text">{{ hour.text }}</div>
-      <calendar-minute-headers :hour="hour.value" :minute-interval="minuteInterval" />
+      <calendar-minute-headers
+        v-if="isMinutesVisible"
+        :hour="hour.value"
+        :minute-interval="minuteInterval"
+      />
     </div>
   </div>
 </template>
@@ -24,23 +28,37 @@ import CalendarMinuteHeadersComponent from "./CalendarMinuteHeaders.vue";
 })
 export default class CalendarHourHeadersComponent extends Mixins(
   CalendarHourMixin
-) {}
+) {
+  @Prop({ type: Boolean, default: true }) readonly isMinutesVisible: boolean;
+
+  get computedClass() {
+    return { narrow: !this.isMinutesVisible };
+  }
+}
 </script>
 <style scoped lang="scss">
 @import "@/style/definitions.scss";
 
-.calendar-hour-header {
-  display: flex;
-  width: 60px;
-  border-right: 1px solid $border-color;
-  border-bottom: 1px solid $border-color;
-  box-sizing: border-box;
-  .calendar-hour-header__text {
-    font-weight: 600;
-    font-size: 1rem;
-    padding: 0.5rem;
-    flex: 1;
-    text-align: end;
+.calendar-hour-headers {
+  .calendar-hour-header {
+    display: flex;
+    width: 60px;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    box-sizing: border-box;
+
+    .calendar-hour-header__text {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem;
+      flex: 1;
+      text-align: end;
+    }
+  }
+  &.narrow {
+    .calendar-hour-header {
+      width: 30px;
+    }
   }
 }
 </style>
