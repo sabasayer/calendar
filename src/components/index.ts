@@ -2,7 +2,7 @@ import _Vue from "vue";
 import CalendarDay from "./CalendarDay.vue";
 import CalendarHoursContainer from "./body/CalendarHoursContainer.vue";
 import type { CalendarDayEventOptions } from "../../types/components/calendar-day-event-options";
-import type { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 
 declare global {
   interface Window {

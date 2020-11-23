@@ -15,7 +15,8 @@
       :is-minutes-visible="false"
       has-header
       header="First Day"
-    />
+    >
+    </calendar-day>
   </div>
 </template>
 
