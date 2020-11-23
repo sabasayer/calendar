@@ -38,6 +38,8 @@
           <slot name="item" :item="item"></slot>
         </template>
       </calendar-hours-container>
+
+      <slot name="right"></slot>
     </div>
 
     <calendar-day-footer />
