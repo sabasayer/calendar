@@ -1,4 +1,4 @@
-import { TimeSpan } from "types/logic/time-span";
+import { TimeSpan } from "../../types/logic/time-span";
 
 class TimeLogic {
   getTimeSpan(timeSpanText: string): TimeSpan {

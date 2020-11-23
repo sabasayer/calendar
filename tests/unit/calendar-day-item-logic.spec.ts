@@ -4,7 +4,7 @@ import { timeLogic } from "@/logic/time.logic";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
-} from "types/logic/calendar-day-item";
+} from "../../types/logic/calendar-day-item";
 
 describe("Calendar Day Item Logic", () => {
   it("should calculate height per minute", () => {

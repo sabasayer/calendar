@@ -1,6 +1,6 @@
 import { timeLogic } from "./time.logic";
-import { CalendarHour } from 'types/logic/calendar-hour';
-import { MinuteInterval } from "types/logic/minute-interval";
+import { CalendarHour } from '../../types/logic/calendar-hour';
+import { MinuteInterval } from "../../types/logic/minute-interval";
 
 class CalendarHourLogic {
   createHoursArray(
