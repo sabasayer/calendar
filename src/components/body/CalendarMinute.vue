@@ -82,6 +82,8 @@ export default class CalendarMinuteComponent extends Mixins(DragTrackerMixin) {
 
     console.log({ blockingItems });
 
+    //limits top is not calculating some times !
+
     this.limits = areaSelectLogic.findLimits({
       containerHeight,
       currentPosition: this.topOffset,

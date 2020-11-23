@@ -2,7 +2,7 @@
   <div class="calendar-hours">
     <div
       v-for="hour in hours"
-      :key="hour.value"
+      :key="`hour_${hour.value}`"
       class="calendar-hour"
       :style="computedStyle"
     >
