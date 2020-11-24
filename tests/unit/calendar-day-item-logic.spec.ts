@@ -1,6 +1,5 @@
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
-import { timeLogic } from "@/logic/time.logic";
 import {
   CalendarDayItem,
   CalendarDayItemPosition,
@@ -264,7 +263,7 @@ describe("Calendar Day Item Logic", () => {
   });
 
   it("should calculate timeSpan from topOffset when value is float", () => {
-    const topOffset = 533.33333333333326;
+    const topOffset = 533.6666666;
     const hourHeight = 80;
     const startTime = "08:00";
 

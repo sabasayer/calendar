@@ -19,6 +19,7 @@
         @item-drop="itemDrop"
         @item-resize="itemResize"
         @area-select="areaSelect"
+        @minute-click="minuteClick"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -96,10 +97,13 @@ export default class CalendarDayComponent extends Vue {
 
   @Emit()
   areaSelect() {}
+
+  @Emit()
+  minuteClick() {}
 }
 </script>
 <style scoped>
-.calendar-day{
+.calendar-day {
   background-color: white;
 }
 .calendar-day__body {

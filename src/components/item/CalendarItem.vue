@@ -137,6 +137,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   resize() {
     this.$emit("resize", this._cloneItem, this.$el);
   }
+
 }
 </script>
 <style scoped lang="scss">

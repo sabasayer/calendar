@@ -1,11 +1,11 @@
-import { draggableItemLogic } from '@/logic/draggable-item.logic';
+import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class DragTrackerMixin extends Vue {
   mouseFirstTopOffset: number = 0;
 
-  calculateMouseFirstTopOffset(ev: MouseEvent,topOffset:number) {
+  calculateMouseFirstTopOffset(ev: MouseEvent, topOffset: number) {
     this.mouseFirstTopOffset = draggableItemLogic.calculateRelativeTop(
       ev.pageY,
       topOffset
@@ -40,7 +40,6 @@ export default class DragTrackerMixin extends Vue {
   removeMouseUpListener() {
     document.removeEventListener("mouseup", this.mouseUp);
   }
-
 
   beforeDestroy() {
     this.removeListeners();

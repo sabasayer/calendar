@@ -10,6 +10,7 @@
         v-for="minute in minutes(hour.value)"
         @select-area="selectArea"
         @select-area-finish="selectAreaFinished"
+        @click="minuteClick"
         :key="`${hour.value}_${minute.text}`"
         :minute="minute"
         :is-clickable="isMinutesClickable"
@@ -74,6 +75,7 @@ import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
 import { CalendarDayEventOptions } from "../../../types/components/calendar-day-event-options";
 import CalendarMinuteComponent from "./CalendarMinute.vue";
 import { EnumCalendarDayItemPosition } from "../../../types/statics/calendar-day-item-position.enum";
+import { MinuteInterval } from "types/logic";
 
 @Component({
   components: {
@@ -217,6 +219,9 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.clearClone();
     this.hideClone();
   }
+
+  @Emit()
+  minuteClick(minute: MinuteInterval) {}
 }
 </script>
 <style scoped lang="scss">
