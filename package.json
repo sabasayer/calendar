@@ -1,6 +1,6 @@
 {
   "name": "@sabasayer/calendar",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "author": "Salih Baki Sayer",
   "scripts": {
     "serve": "vue-cli-service serve",

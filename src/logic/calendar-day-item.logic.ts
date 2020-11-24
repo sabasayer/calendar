@@ -151,7 +151,7 @@ class CalendarDayItemLogic {
     startTime: string;
   }): string {
     const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
-    const minutesOffset = Math.ceil(options.topOffset / heightPerMinute);
+    const minutesOffset = Math.floor(options.topOffset / heightPerMinute);
 
     return timeLogic.addMinutesToTimeSpanText(options.startTime, minutesOffset);
   }

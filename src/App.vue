@@ -36,54 +36,11 @@ import { CalendarDayEventOptions } from '../types/components/calendar-day-event-
 export default class App extends Vue {
   startTime = "08:00";
   endTime = "23:59";
-  hourHeight = 80;
-  minuteInterval = 20;
+  hourHeight = 100;
+  minuteInterval = 10;
 
   events: CalendarEvent[] = [
-    {
-      id: 1,
-      from: "08:00",
-      to: "08:42",
-      position: EnumCalendarDayItemPosition.Relative,
-      title: "Randevu",
-      color: "orange",
-      zIndex: 5,
-      isResizable: true,
-      isDraggable: true,
-    },
-    {
-      id: 121,
-      from: "09:00",
-      to: "10:20",
-      position: EnumCalendarDayItemPosition.Relative,
-      title: "Randevu",
-      color: "teal",
-      zIndex: 5,
-      isResizable: true,
-      isDraggable: true,
-    },
-    {
-      id: 120,
-      from: "10:00",
-      to: "11:40",
-      position: EnumCalendarDayItemPosition.Relative,
-      title: "Randevu",
-      color: "pink",
-      zIndex: 5,
-      isResizable: true,
-      isDraggable: true,
-    },
-    {
-      id: 75,
-      from: "14:00",
-      to: "16:00",
-      position: EnumCalendarDayItemPosition.Static,
-      title: "Kapalı",
-      color: "#555",
-      zIndex: 1,
-      isResizable: true,
-      textColor: "white",
-    },
+   
   ];
 
   itemClicked(options: CalendarDayEventOptions) {

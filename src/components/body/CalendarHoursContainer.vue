@@ -204,7 +204,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
 
     this.cloneItem = item;
     this.isCloneVisible = true;
-    console.log("area selected", item);
   }
 
   selectAreaFinished(item: CalendarDayItem) {
