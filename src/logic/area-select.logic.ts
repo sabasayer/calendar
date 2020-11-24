@@ -34,9 +34,21 @@ class AreaSelectLogic {
         item.topOffset,
         item.height
       );
-      if (itemBottom <= currentPosition) top = Math.max(itemBottom, top);
-      if (item.topOffset >= currentPosition)
-        bottom = Math.min(item.topOffset, bottom || item.topOffset);
+
+      const isInside =
+        item.topOffset < currentPosition && itemBottom > currentPosition;
+
+      const isAbove = itemBottom <= currentPosition;
+      const isBelow = item.topOffset >= currentPosition;
+
+      if (isInside) {
+        top = currentPosition;
+        bottom = currentPosition;
+        return;
+      }
+
+      if (isAbove) top = Math.max(itemBottom, top);
+      if (isBelow) bottom = Math.min(item.topOffset, bottom || item.topOffset);
     });
 
     bottom = Math.min(containerHeight, bottom || containerHeight);

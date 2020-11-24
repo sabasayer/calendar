@@ -35,6 +35,25 @@ describe("Area Select Logic", () => {
     });
   });
 
+  it("should set top-bottom limits to currentPosition when position inside limits",() => {
+    const currentPosition = 80;
+    const positions:Pick<CalendarDayItem,"topOffset"|"height">[] = [
+      {topOffset:40,height:50},
+      {topOffset:120,height:40}
+    ]
+
+    const limits = areaSelectLogic.findLimits({
+      currentPosition,
+      items:positions,
+      containerHeight:1200
+    });
+
+    expect(limits).toEqual({
+      top:80,
+      bottom:80
+    })
+  })
+
   it("should find bottom position as containerHeight if nothing below", () => {
     const currentPosition = 200;
     const containerHeight = 400;
