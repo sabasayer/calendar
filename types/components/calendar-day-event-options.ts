@@ -1,8 +1,8 @@
-import { CalendarDayItem } from '../logic/calendar-day-item';
+import { CalendarDayItem } from "../logic/calendar-day-item";
 
-export type CalendarDayEventOptions = {
-    item:CalendarDayItem,
-    el?:HTMLElement,
-    collidedItems:CalendarDayItem[],
-    blockingCollidedItems?:CalendarDayItem[]
-}
+export type CalendarDayEventOptions<T = undefined> = {
+  item: CalendarDayItem<T>;
+  el?: HTMLElement;
+  collidedItems: CalendarDayItem<T>[];
+  blockingCollidedItems?: CalendarDayItem<T>[];
+};
