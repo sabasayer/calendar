@@ -97,15 +97,28 @@ class CalendarDayItemLogic {
     return item1Bottom > item2.topOffset && item1.topOffset < item2Bottom;
   }
 
+  calculateFreeSpaceAtRight(
+    hourPaddingRight: number,
+    position: EnumCalendarDayItemPosition
+  ): number {
+    return position === EnumCalendarDayItemPosition.Static
+      ? 0
+      : hourPaddingRight;
+  }
+
   calculateWidth(options: {
     item: CalendarDayItemPosition;
     marginBetweenItems: number;
     containerWidth: number;
     collidedItemCount: number;
+    freeSpaceAtRight?: number;
   }): number {
+    const calculatedContainerWidth =
+      options.containerWidth - (options.freeSpaceAtRight ?? 0);
+
     const totalItemCount = options.collidedItemCount + 1;
     const totalMargin = options.collidedItemCount * options.marginBetweenItems;
-    const remainingWidth = options.containerWidth - totalMargin;
+    const remainingWidth = calculatedContainerWidth - totalMargin;
 
     const widthPerItem = remainingWidth / totalItemCount;
     return widthPerItem;
@@ -116,6 +129,7 @@ class CalendarDayItemLogic {
     collidedItems: CalendarDayItemPosition[];
     containerWidth: number;
     marginBetweenItems: number;
+    freeSpaceAtRight?: number;
   }): number {
     const widthPerItem = this.calculateWidth({
       collidedItemCount: options.collidedItems.length,

@@ -115,11 +115,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
   }
 
   calculateAvailableWidth(): number {
-    const containerWidth = this.getContainerWidth();
-
-    if (!containerWidth) return 0;
-
-    return containerWidth - this.hourPaddingRight;
+    return this.getContainerWidth() ?? 0;
   }
 
   createItems() {
@@ -131,6 +127,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
       hourHeight: this.hourHeight,
       containerWidth: availableWidth,
       marginBetweenItems: this.horizontalMarginBetweenItems,
+      hourPaddingRight: this.hourPaddingRight,
     });
   }
 

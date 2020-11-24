@@ -5,6 +5,7 @@ import {
   CalendarDayItemPosition,
 } from "../../types/logic/calendar-day-item";
 import { CalendarEvent } from "../../types/logic/calendar-event";
+import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 
 class CalendarDayLogic {
   createItemWithVerticalPositions(options: {
@@ -42,8 +43,14 @@ class CalendarDayLogic {
     allItems: CalendarDayItem[];
     containerWidth: number;
     marginBetweenItems: number;
+    hourPaddingRight?: number;
   }): CalendarDayItem {
-    let { item, containerWidth, marginBetweenItems } = options;
+    let {
+      item,
+      containerWidth,
+      marginBetweenItems,
+      hourPaddingRight,
+    } = options;
 
     const collidedItems = options.allItems.filter(
       (e) =>
@@ -52,11 +59,17 @@ class CalendarDayLogic {
         calendarDayItemLogic.detectCollision(e, item)
     );
 
+    const freeSpaceAtRight = calendarDayItemLogic.calculateFreeSpaceAtRight(
+      hourPaddingRight ?? 0,
+      item.position
+    );
+
     item.leftOffset = calendarDayItemLogic.calculateLeft({
       item,
       collidedItems,
       containerWidth,
       marginBetweenItems,
+      freeSpaceAtRight,
     });
 
     item.width = calendarDayItemLogic.calculateWidth({
@@ -64,6 +77,7 @@ class CalendarDayLogic {
       collidedItemCount: collidedItems.length,
       containerWidth,
       marginBetweenItems,
+      freeSpaceAtRight,
     });
 
     return item;
@@ -82,6 +96,7 @@ class CalendarDayLogic {
     hourHeight: number;
     containerWidth: number;
     marginBetweenItems: number;
+    hourPaddingRight?: number;
   }): CalendarDayItem[] {
     let items = options.events.map((event) =>
       this.createItemWithVerticalPositions({
@@ -99,6 +114,7 @@ class CalendarDayLogic {
         containerWidth: options.containerWidth,
         marginBetweenItems: options.marginBetweenItems,
         allItems: items,
+        hourPaddingRight: options.hourPaddingRight,
       })
     );
 

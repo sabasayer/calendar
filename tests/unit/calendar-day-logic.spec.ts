@@ -56,16 +56,53 @@ describe("Calendar Day Logic", () => {
       cannotDrop: false,
     };
 
+    const containerWidth = 100;
+    const hourPaddingRight = 20;
+
     item = calendarDayLogic.updateHorizontalPositions({
       item,
       allItems: [item],
-      containerWidth: 100,
+      containerWidth,
       marginBetweenItems: 10,
+      hourPaddingRight
     });
 
-    expect(item.width).toBe(100);
+    expect(item.width).toBe(80);
     expect(item.leftOffset).toBe(0);
   });
+
+  
+  it("should set left and width with ignored freeSpaceAtRight for static positioned item",() => {
+    let item: CalendarDayItem = {
+      id: 1,
+      color: "red",
+      from: "14:00",
+      to: "14:30",
+      height: 50,
+      topOffset: 50,
+      order: 1,
+      position: EnumCalendarDayItemPosition.Static,
+      title: "Test",
+      width: 0,
+      leftOffset: 0,
+      zIndex: 1,
+      cannotDrop: false,
+    };
+
+    const containerWidth = 220;
+    const hourPaddingRight = 40;
+
+    item = calendarDayLogic.updateHorizontalPositions({
+      item,
+      allItems: [item],
+      containerWidth,
+      marginBetweenItems: 10,
+      hourPaddingRight
+    });
+
+    expect(item.width).toBe(220);
+    expect(item.leftOffset).toBe(0);
+  })
 
   it("should set horizontal values for item with colliision", () => {
     let item: CalendarDayItem = {
@@ -192,6 +229,7 @@ describe("Calendar Day Logic", () => {
     const hourHeight = 100;
     const containerWidth = 200;
     const marginBetweenItems = 10;
+    const hourPaddingRight = 10;
 
     let options: CalendarEvent[] = [
       {
@@ -247,6 +285,7 @@ describe("Calendar Day Logic", () => {
       hourHeight,
       containerWidth,
       marginBetweenItems,
+      hourPaddingRight
     });
 
     const expectedItems: CalendarDayItem[] = [
@@ -266,7 +305,7 @@ describe("Calendar Day Logic", () => {
         height: 75,
         topOffset: 125,
         leftOffset: 0,
-        width: 95,
+        width: 90,
         closestBlockingPosition: 400,
         cannotDrop: false,
       },
@@ -275,8 +314,8 @@ describe("Calendar Day Logic", () => {
         order: 2,
         height: 100,
         topOffset: 150,
-        leftOffset: 105,
-        width: 95,
+        leftOffset: 100,
+        width: 90,
         closestBlockingPosition: 400,
         cannotDrop: false,
       },
@@ -286,7 +325,7 @@ describe("Calendar Day Logic", () => {
         height: 100,
         topOffset: 350,
         leftOffset: 0,
-        width: containerWidth,
+        width: 190,
         closestBlockingPosition: 0,
         cannotDrop: false,
       },

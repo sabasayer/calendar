@@ -166,6 +166,18 @@ describe("Calendar Day Item Logic", () => {
     expect(isCollides).toBe(true);
   });
 
+  it("shoul calculate 0 freeSpaceAtRight for static position", () => {
+    const hourPaddingRight: number = 30;
+    const position: EnumCalendarDayItemPosition =
+      EnumCalendarDayItemPosition.Static;
+
+    const freeSpace = calendarDayItemLogic.calculateFreeSpaceAtRight(
+      hourPaddingRight,
+      position
+    );
+
+    expect(freeSpace).toBe(0);
+  });
 
   it("should calculate width of item", () => {
     let item: CalendarDayItemPosition = {
@@ -180,15 +192,17 @@ describe("Calendar Day Item Logic", () => {
     const marginBetweenItems = 5;
     const containerWidth = 100;
     const collidedItemCount = 1;
+    const freeSpaceAtRight = 20;
 
     const width = calendarDayItemLogic.calculateWidth({
       item,
       marginBetweenItems,
       containerWidth,
       collidedItemCount,
+      freeSpaceAtRight,
     });
 
-    expect(width).toBe(47.5);
+    expect(width).toBe(37.5);
   });
 
   it("should calculate left of item", () => {
@@ -222,15 +236,17 @@ describe("Calendar Day Item Logic", () => {
 
     const marginBetweenItems = 5;
     const containerWidth = 100;
+    const freeSpaceAtRight = 15;
 
     let leftOffset = calendarDayItemLogic.calculateLeft({
       item,
       collidedItems,
       marginBetweenItems,
       containerWidth,
+      freeSpaceAtRight,
     });
 
-    expect(leftOffset).toBe(70);
+    expect(leftOffset).toBe(60);
   });
 
   it("should calculate timeSpan from topOffset", () => {
