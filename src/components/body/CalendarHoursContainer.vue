@@ -107,7 +107,8 @@ export default class CalendarHoursContainerComponent extends Mixins(
       calendarHourLogic.createMinutes(hour, this.minuteInterval);
   }
 
-  mounted() {
+  async mounted() {
+    await this.$nextTick();
     this.createItems();
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@sabasayer/calendar",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "author": "Salih Baki Sayer",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,7 +12,8 @@
     "build-modern-wc": "vue-cli-service build --modern --target wc --name calendar ./src/components/*.vue",
     "build-modern-wc-async": "vue-cli-service build --modern --target wc-async --name calendar ./src/components/*.vue",
     "build-wc": "vue-cli-service build --target wc --name calendar ./src/components/*.vue",
-    "build-wc-async": "vue-cli-service build --target wc-async --name calendar ./src/components/*.vue"
+    "build-wc-async": "vue-cli-service build --target wc-async --name calendar ./src/components/*.vue",
+    "npm-publish":"npm publish --access public"
   },
   "main": "./dist/calendar.common.js",
   "unpkg": "./dist/calendar.umd.min.js",

@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strictPropertyInitialization": false,
-    // "importsNotUsedAsValues": "error",
+    "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
     "baseUrl": ".",
@@ -29,5 +29,5 @@
     "types/statics/*.ts",
     "types/logic/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules","dist"]
 }
