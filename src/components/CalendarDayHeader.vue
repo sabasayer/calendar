@@ -25,6 +25,6 @@ export default class CalendarDayHeaderComponent extends Vue {
   position: sticky;
   top: 0;
   background: inherit;
-  z-index: 30;
+  z-index: 5;
 }
 </style>
