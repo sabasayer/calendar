@@ -1,7 +1,7 @@
-interface MinuteInterval{
-    from:string,
-    to:string,
-    text:string
+import type { TimeInterval } from "./time-interval";
+
+interface MinuteInterval extends TimeInterval {
+  text: string;
 }
 
-export type {MinuteInterval};
+export type { MinuteInterval };

@@ -1,4 +1,6 @@
 import { timeLogic } from "@/logic/time.logic";
+import { MinuteInterval } from 'types/logic';
+import { TimeInterval } from 'types/logic/time-interval';
 import { TimeSpan } from "types/logic/time-span";
 
 describe("TimeLogic", () => {
@@ -62,4 +64,50 @@ describe("TimeLogic", () => {
 
     expect(newTimeSpanText).toBe("14:26");
   });
+
+  it("should update from-to with newFrom keeping difference",() => {
+    const fromTo:TimeInterval = {
+      from:"12:22",
+      to:"13:18"
+    }
+
+    const newFrom = "14:00";
+
+    const updated = timeLogic.updateTimeInterval(fromTo,newFrom);
+
+    expect(updated.from).toBe("14:00");
+    expect(updated.to).toBe("14:56");
+  })
+
+  it("should detect collision of two timeIntervals",() => {
+    const timeInterval:TimeInterval = {
+      from:"13:40",
+      to:"14:20"
+    };
+
+    const timeInterval2:TimeInterval = {
+      from:"14:11",
+      to:"15:45"
+    };
+
+    const isCollides = timeLogic.detectCollision(timeInterval,timeInterval2);
+
+    expect(isCollides).toBe(true)
+  })
+
+  it("should not detect collision of two timeIntervals that not collides",()=>{
+    const timeInterval:TimeInterval = {
+      from:"13:40",
+      to:"14:20"
+    };
+
+    const timeInterval2:TimeInterval = {
+      from:"16:11",
+      to:"17:45"
+    };
+
+    const isCollides = timeLogic.detectCollision(timeInterval,timeInterval2);
+
+    expect(isCollides).toBe(false)
+  })
 });
