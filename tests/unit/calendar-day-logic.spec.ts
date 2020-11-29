@@ -70,7 +70,6 @@ describe("Calendar Day Logic", () => {
     expect(item.width).toBe(80);
     expect(item.leftOffset).toBe(0);
   });
-
   
   it("should set left and width with ignored freeSpaceAtRight for static positioned item",() => {
     let item: CalendarDayItem = {
