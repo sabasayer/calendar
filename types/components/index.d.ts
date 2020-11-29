@@ -4,6 +4,8 @@ import CalendarHoursContainer from "./CalendarHoursContainer.vue";
 import { CalendarDayEventOptions } from "./calendar-day-event-options";
 import { EnumCalendarDayItemPosition } from "../statics/calendar-day-item-position.enum";
 import { timeLogic } from "../../src/logic/time.logic";
+import { calendarEventLogic } from "../../src/logic/calendar-event.logic";
+import { calendarDayLogic } from "../../src/logic/calendar-day.logic";
 
 declare global {
   interface Window {
@@ -19,5 +21,7 @@ export {
   CalendarHoursContainer,
   EnumCalendarDayItemPosition,
   timeLogic,
+  calendarEventLogic,
+  calendarDayLogic,
 };
 export * from "../logic";
