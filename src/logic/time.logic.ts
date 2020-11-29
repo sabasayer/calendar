@@ -1,3 +1,4 @@
+import { TimeInterval } from "../../types/logic/time-interval";
 import { TimeSpan } from "../../types/logic/time-span";
 
 class TimeLogic {
@@ -53,6 +54,29 @@ class TimeLogic {
     const newTimeSpan = this.addMinutesToTimeSpan(timeSpan, minute);
 
     return this.createTimeSpanText(newTimeSpan);
+  }
+
+  updateTimeInterval(fromTo: TimeInterval, newFrom: string): TimeInterval {
+    const fromMinutes = this.totalMinutesInTimeSpan(fromTo.from);
+    const toMinutes = this.totalMinutesInTimeSpan(fromTo.to);
+
+    const difference = toMinutes - fromMinutes;
+    const newTo = this.addMinutesToTimeSpanText(newFrom, difference);
+
+    return {
+      from: newFrom,
+      to: newTo,
+    };
+  }
+
+  detectCollision(
+    timeInterval: TimeInterval,
+    timeInterval2: TimeInterval
+  ): boolean {
+    return (
+      timeInterval.to > timeInterval2.from &&
+      timeInterval.from < timeInterval2.to
+    );
   }
 }
 
