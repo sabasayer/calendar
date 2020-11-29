@@ -1,4 +1,4 @@
-import { TimeInterval } from "types/logic";
+import { TimeInterval } from "../../types/logic";
 import { timeLogic } from "./time.logic";
 
 class CalendarEventLogic {
