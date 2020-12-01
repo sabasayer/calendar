@@ -57,6 +57,20 @@ describe("Calendar Day Item Logic", () => {
     expect(topOffset).toBe(400);
   });
 
+  it("should calculate vertical position for item with fixing floating point problem", () => {
+    const from = "16:20";
+    const hourHeight = 100;
+    const startTime = "00:00";
+
+    const topOffset = calendarDayItemLogic.calculateTopOffset({
+      from,
+      hourHeight,
+      startTime,
+    });
+
+    expect(topOffset).toBe(1633);
+  });
+
   it("should calculate height", () => {
     const from = "11:00";
     const to = "13:30";
@@ -102,6 +116,7 @@ describe("Calendar Day Item Logic", () => {
 
     expect(isCollides).toBe(true);
   });
+
 
   it("should return false for edge collision", () => {
     const item1: CalendarDayItemPosition = {
@@ -263,7 +278,7 @@ describe("Calendar Day Item Logic", () => {
   });
 
   it("should calculate timeSpan from topOffset when value is float", () => {
-    const topOffset = 533.6666666;
+    const topOffset = 534;
     const hourHeight = 80;
     const startTime = "08:00";
 
@@ -273,11 +288,11 @@ describe("Calendar Day Item Logic", () => {
       startTime,
     });
 
-    expect(timeSpan).toBe("14:40");
+    expect(timeSpan).toBe("14:41");
   });
 
   it("should calculate timespan with decimal topOffset", () => {
-    const topOffset = 21.333333333333332;
+    const topOffset = 21;
     const hourHeight = 80;
     const startTime = "08:00";
 
