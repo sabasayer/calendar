@@ -40,7 +40,26 @@ export default class App extends Vue {
   minuteInterval = 10;
 
   events: CalendarEvent[] = [
-   
+   {
+     id:1,
+     from:'16:30',
+     to:'16:40',
+     title:'',
+     color:'pink',
+     position:EnumCalendarDayItemPosition.Relative,
+     zIndex:1,
+     isDraggable:true,
+     isResizable:true
+   },
+   {
+     id:2,
+     from:'17:00',
+     to:'23:59',
+     title:'',
+     color:'black',
+     position:EnumCalendarDayItemPosition.Static,
+     zIndex:1,
+   }
   ];
 
   itemClicked(options: CalendarDayEventOptions) {

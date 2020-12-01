@@ -17,8 +17,12 @@ class DraggableItemLogic {
 
     const remaining = options.topOffset % minuteHeight;
 
-    if (remaining < minuteHeight / 2) return options.topOffset - remaining;
-    else return minuteHeight - remaining + options.topOffset;
+    let result;
+
+    if (remaining < minuteHeight / 2) result = options.topOffset - remaining;
+    else result = minuteHeight - remaining + options.topOffset;
+
+    return Math.round(result);
   }
 
   calculateRelativeTop(pageY: number, topOffset: number): number {
@@ -26,7 +30,7 @@ class DraggableItemLogic {
   }
 
   calculateNewTop(pageY: number, firstTopOffset: number): number {
-    return pageY + firstTopOffset;
+    return Math.round(pageY + firstTopOffset);
   }
 
   createClone(item: CalendarDayItem): CalendarDayItem {

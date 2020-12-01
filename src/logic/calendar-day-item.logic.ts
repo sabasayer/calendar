@@ -54,7 +54,7 @@ class CalendarDayItemLogic {
     if (difference < 0) throw "To must be later then from";
 
     const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
-    return heightPerMinute * difference;
+    return Math.round(heightPerMinute * difference);
   }
 
   calculateTopOffset(options: {
@@ -151,7 +151,7 @@ class CalendarDayItemLogic {
     startTime: string;
   }): string {
     const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
-    const minutesOffset = Math.floor(options.topOffset / heightPerMinute);
+    const minutesOffset = Math.round(options.topOffset / heightPerMinute);
 
     return timeLogic.addMinutesToTimeSpanText(options.startTime, minutesOffset);
   }
