@@ -15,7 +15,7 @@
       </slot>
 
       <vertical-resize-handler
-        v-if="item.isResizable"
+        v-if="isResizeHandlerVisible"
         @resize-start="onResizeStart"
         @resize="onResized"
         @resize-end="onResizeEnd"
@@ -51,6 +51,10 @@ import { resizeLogic } from "@/logic/resize.logic";
 })
 export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   @Prop({ type: Boolean, default: false }) readonly isGhost: boolean;
+
+  get isResizeHandlerVisible() {
+    return this.item.isResizable && !this.disabled;
+  }
 
   get isChanging() {
     return this._isCloneVisible && this._cloneItem.id === this.item.id;
@@ -88,7 +92,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   }
 
   click() {
-    if (!this.item.isClickable) return;
+    if (!this.item.isClickable || this.disabled) return;
 
     this.$emit("click", this.item, this.$el);
   }
@@ -137,7 +141,6 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   resize() {
     this.$emit("resize", this._cloneItem, this.$el);
   }
-
 }
 </script>
 <style scoped lang="scss">

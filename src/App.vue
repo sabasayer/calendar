@@ -14,6 +14,7 @@
       :is-area-selectable="true"
       :is-minutes-visible="false"
       has-header
+      is-actions-disabled
       header="First Day"
     >
     </calendar-day>

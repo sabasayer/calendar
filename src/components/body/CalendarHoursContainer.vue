@@ -38,6 +38,7 @@
       :clone-item.sync="cloneItem"
       :start-time="startTime"
       :end-time="endTime"
+      :disabled="isActionsDisabled"
       @move="itemMove"
       @click="itemClick"
       @drop="itemDrop"
