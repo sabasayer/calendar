@@ -8,9 +8,9 @@
   >
     <div class="calendar-item__content">
       <slot>
-        <div>
-          <div>{{ item.title }}</div>
+        <div class="calendar-item__title">
           <div>{{ item.from }} - {{ item.to }}</div>
+          <div>{{ item.title }}</div>
         </div>
       </slot>
 
@@ -156,6 +156,12 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     position: relative;
     box-sizing: border-box;
     height: inherit;
+    .calendar-item__title {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      max-height: 100%;
+    }
   }
   &.bordered {
     border-left: 5px solid;

@@ -45,7 +45,7 @@ export default class App extends Vue {
      id:1,
      from:'16:30',
      to:'16:40',
-     title:'',
+     title:'Test açıklama vs',
      color:'pink',
      position:EnumCalendarDayItemPosition.Relative,
      zIndex:1,
@@ -54,13 +54,16 @@ export default class App extends Vue {
    },
    {
      id:2,
-     from:'17:00',
-     to:'23:59',
-     title:'',
-     color:'black',
-     position:EnumCalendarDayItemPosition.Static,
+     from:'16:50',
+     to:'18:00',
+     title:'Test açıklama vs',
+     color:'pink',
+     position:EnumCalendarDayItemPosition.Relative,
      zIndex:1,
-   }
+     isDraggable:true,
+     isResizable:true
+   },
+  
   ];
 
   itemClicked(options: CalendarDayEventOptions) {
