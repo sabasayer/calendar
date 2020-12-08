@@ -12,9 +12,8 @@
       :minute-interval="minuteInterval"
       :hour-padding-right="20"
       :is-area-selectable="true"
-      :is-minutes-visible="false"
+      :is-minutes-visible="true"
       has-header
-      is-actions-disabled
       header="First Day"
     >
     </calendar-day>
