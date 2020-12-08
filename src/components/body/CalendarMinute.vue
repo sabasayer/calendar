@@ -1,7 +1,7 @@
 <template>
   <div
-    @click="click"
-    @mousedown="mouseDown"
+    @click="!disabled ? click($event) : undefined"
+    @mousedown="!disabled ? mouseDown($event) : undefined"
     class="calendar-hour__minute"
     :class="computedClass"
   >

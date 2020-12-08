@@ -1,7 +1,7 @@
 <template>
   <div
-    @click="click"
-    @mousedown="mouseDown"
+    @click="!disabled ? click($event) : undefined"
+    @mousedown="!disabled ? mouseDown($event) : undefined"
     class="calendar-item"
     :style="computedStyle"
     :class="computedClass"
@@ -60,6 +60,14 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
     return this._isCloneVisible && this._cloneItem.id === this.item.id;
   }
 
+  get isClickable() {
+    return !this.disabled && this.item.isClickable;
+  }
+
+  get isDraggable() {
+    return !this.disabled && this.item.isDraggable;
+  }
+
   get topOffset() {
     return this._isCloneVisible
       ? this._cloneItem.topOffset + this._cloneItem.height
@@ -83,8 +91,8 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   get computedClass() {
     return {
       bordered: this.item.isBordered,
-      clickable: this.item.isClickable,
-      draggable: this.item.isDraggable,
+      clickable: this.isClickable,
+      draggable: this.isDraggable,
       ghost: this.isGhost,
       "cannot-drop": this.item.cannotDrop,
       changing: this.isChanging,
@@ -135,6 +143,15 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
 
   onResizeEnd() {
     this.hideClone();
+
+    if (
+      !calendarDayItemLogic.isVerticalValuesChanged({
+        item: this.item,
+        topOffset: this._cloneItem.topOffset,
+        height: this._cloneItem.height,
+      })
+    )
+      return;
     this.resize();
   }
 
