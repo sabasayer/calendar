@@ -51,7 +51,6 @@ class CalendarDayItemLogic {
     const totalToMinutes = timeLogic.totalMinutesInTimeSpan(options.to);
 
     const difference = totalToMinutes - totalFromMinutes;
-    if (difference < 0) throw "To must be later then from";
 
     const heightPerMinute = this.calculateHeightPerMinute(options.hourHeight);
     return Math.round(heightPerMinute * difference);

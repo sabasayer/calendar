@@ -29,18 +29,18 @@ describe("Calendar Day Item Logic", () => {
     expect(distance).toBe(450);
   });
 
-  it("should throw error if from is after then to", () => {
+  it("should calculate negative distance", () => {
     const from = "13:23";
-    const to = "13:12";
+    const to = "12:23";
     const hourHeight = 12;
 
-    expect(() =>
-      calendarDayItemLogic.calculateDistance({
-        from,
-        to,
-        hourHeight,
-      })
-    ).toThrow("To must be later then from");
+    const distance = calendarDayItemLogic.calculateDistance({
+      from,
+      to,
+      hourHeight,
+    });
+
+    expect(distance).toBe(-12);
   });
 
   it("should calculate vertical position for item", () => {
