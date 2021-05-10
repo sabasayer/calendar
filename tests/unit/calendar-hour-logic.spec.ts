@@ -26,10 +26,10 @@ describe("Calendar Hour Logic", () => {
     const minutes = calendarHourLogic.createMinutes(hour, minuteInterval);
 
     const expected: MinuteInterval[] = [
-      { from: "09:00", to: "09:15", text: "00" },
-      { from: "09:15", to: "09:30", text: "15" },
-      { from: "09:30", to: "09:45", text: "30" },
-      { from: "09:45", to: "10:00", text: "45" },
+      { from: "09:00", to: "09:15", text: "00", interval: 15 },
+      { from: "09:15", to: "09:30", text: "15", interval: 15 },
+      { from: "09:30", to: "09:45", text: "30", interval: 15 },
+      { from: "09:45", to: "10:00", text: "45", interval: 15 },
     ];
 
     expect(minutes).toEqual(expected);

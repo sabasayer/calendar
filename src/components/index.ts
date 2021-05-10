@@ -1,6 +1,6 @@
 import _Vue from "vue";
 import CalendarDay from "./CalendarDay.vue";
-import CalendarHoursContainer from "./body/CalendarHoursContainer.vue";
+import CalendarHoursContainer from "./body/CalendarMinutesContainer.vue";
 import type { CalendarDayEventOptions } from "../../types/components/calendar-day-event-options";
 import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-item-position.enum";
 import { timeLogic } from "../logic/time.logic";
