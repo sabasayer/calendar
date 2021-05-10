@@ -85,30 +85,18 @@ export default class App extends Vue {
   }
 
   minuteClick(minute: MinuteInterval) {
-    console.log("options");
     let event: CalendarEvent = {
       to: minute.to,
       from: minute.from,
       color: "pink",
       id: Math.random(),
-      title: "emre",
+      title: "test",
       position: EnumCalendarDayItemPosition.Absolute,
       zIndex: 1,
       isDraggable: true,
       isResizable: true,
     };
 
-    // let event1 = {
-    //   id: 2,
-    //   from: "18:00",
-    //   to: "18:10",
-    //   title: "Test açıklama vs",
-    //   color: "pink",
-    //   position: EnumCalendarDayItemPosition.Relative,
-    //   zIndex: 1,
-    //   isDraggable: true,
-    //   isResizable: true,
-    // };
     this.events.push(event);
   }
 
