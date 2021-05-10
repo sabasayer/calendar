@@ -71,23 +71,6 @@ export default class App extends Vue {
     console.info("item clicked", options.item);
   }
 
-  minuteClick(minute: MinuteInterval) {
-    console.log("options");
-    let event: CalendarEvent = {
-      to: minute.to,
-      from: minute.from,
-      color: "pink",
-      id: Math.random(),
-      title: "test",
-      position: EnumCalendarDayItemPosition.Absolute,
-      zIndex: 1,
-      isDraggable: true,
-      isResizable: true,
-    };
-
-    this.events.push(event);
-  }
-
   itemDrop(options: CalendarDayEventOptions) {
     this.updateEvent(options);
   }

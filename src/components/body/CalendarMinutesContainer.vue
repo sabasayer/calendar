@@ -114,14 +114,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     );
   }
 
-  get minuteStyle() {
-    return (interval: number) => {
-      const sixtMinutesInPixel = 100;
-      const currentMinuteInPixel = (interval * sixtMinutesInPixel) / 60;
-      return { height: `${currentMinuteInPixel}px` };
-    };
-  }
-
   async mounted() {
     await this.$nextTick();
     this.createAllMinutes();
@@ -241,15 +233,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.hideClone();
   }
   
-  private createAllMinutes() {
-    this.hours.forEach((h) => {
-      const result = this.minutes(h.value);
-      result.forEach((r) => {
-        r.hour = h;
-        this.allMinutes.push(r);
-      });
-    });
-  }
 
   @Emit()
   minuteClick(minute: MinuteInterval) {}
