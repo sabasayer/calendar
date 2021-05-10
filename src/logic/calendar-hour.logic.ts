@@ -1,4 +1,4 @@
-import { timeLogic } from "./time.logic";
+import { timeLogic } from './time.logic';
 import { CalendarHour } from '../../types/logic/calendar-hour';
 import { MinuteInterval } from "../../types/logic/minute-interval";
 
@@ -10,7 +10,7 @@ class CalendarHourLogic {
     const startHour = timeLogic.getTimeSpan(startTime).hour;
     const endHour = timeLogic.getTimeSpan(endTime).hour;
 
-    let hours:CalendarHour[] = [];
+    let hours: CalendarHour[] = [];
 
     for (let i = startHour; i <= endHour; i++)
       hours.push({
@@ -21,48 +21,31 @@ class CalendarHourLogic {
     return hours;
   }
 
-  createMinutes(hour: number, minuteInterval: number): MinuteInterval[] {
+  createAllMinutes(startTime: string, endTime: string, minuteInterval: number): MinuteInterval[] {
     let minutes: MinuteInterval[] = [];
 
-    for (let i = 0; i < 60; i += minuteInterval) {
-      const interval = this.createMinuteInterval({
-        hour,
-        minuteInterval,
-        startMinute: i,
-      });
+    const totalMinutes = timeLogic.totalMinutesInTimeSpan(endTime) - timeLogic.totalMinutesInTimeSpan(startTime)
+    const count = Math.floor(totalMinutes / minuteInterval);
+    let start = startTime;
 
-      minutes.push(interval);
+    for (let index = 0; index <= count; index++) {
+      let to = timeLogic.addMinutesToTimeSpanText(start, minuteInterval)
+      let interval = timeLogic.totalMinutesInTimeSpan(to) - timeLogic.totalMinutesInTimeSpan(start)
+      let startHour = start.split(":")[0];
+      let startMinute = start.split(":")[1];
+      if (index == count && endTime != to) {
+        to = endTime;
+        interval =timeLogic.totalMinutesInTimeSpan(to) - timeLogic.totalMinutesInTimeSpan(start)
+
+      }
+
+      minutes.push({ from: start, to: to, interval: interval, text: startMinute, hour: { value: +startHour, text: timeLogic.createTwoDigitText(+startHour) } })
+      start = to;
+
     }
-
     return minutes;
   }
-
-  createMinuteInterval(options: {
-    hour: number;
-    startMinute: number;
-    minuteInterval: number;
-  }): MinuteInterval {
-    let startMinute = options.startMinute;
-    let startMinuteText = timeLogic.createTwoDigitText(startMinute);
-    let startHourText = timeLogic.createTwoDigitText(options.hour);
-
-    let endMinute = startMinute + options.minuteInterval;
-    let endHour = options.hour;
-
-    if (endMinute >= 60) {
-      endMinute = 0;
-      endHour++;
-    }
-
-    let endMinuteText = timeLogic.createTwoDigitText(endMinute);
-    let endHourText = timeLogic.createTwoDigitText(endHour);
-
-    return {
-      from: `${startHourText}:${startMinuteText}`,
-      to: `${endHourText}:${endMinuteText}`,
-      text: startMinuteText,
-    };
-  }
+  
 }
 
 export const calendarHourLogic = new CalendarHourLogic();
