@@ -1,15 +1,17 @@
 import { timeLogic } from './time.logic';
 import { CalendarHour } from '../../types/logic/calendar-hour';
 import { MinuteInterval } from "../../types/logic/minute-interval";
+import { MinuteType } from 'types/logic/minute-composite';
 
 class CalendarHourLogic {
+  static times: MinuteType[] = []
+
   createHoursArray(
     startTime: string,
     endTime: string
   ): CalendarHour[] {
     const startHour = timeLogic.getTimeSpan(startTime).hour;
     const endHour = timeLogic.getTimeSpan(endTime).hour;
-
     let hours: CalendarHour[] = [];
 
     for (let i = startHour; i <= endHour; i++)

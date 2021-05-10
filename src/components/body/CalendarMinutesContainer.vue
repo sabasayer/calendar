@@ -98,6 +98,14 @@ export default class CalendarHoursContainerComponent extends Mixins(
   isCloneVisible: boolean = false;
   cloneItem: CalendarDayItem = calendarDayItemLogic.createDefaultModel();
 
+  get minuteStyle() {
+    return (interval: number) => {
+      const sixtMinutesInPixel = 100;
+      const currentMinuteInPixel = (interval * sixtMinutesInPixel) / 60;
+      return { height: `${currentMinuteInPixel}px` };
+    };
+  }
+
   get minutes() {
     return calendarHourLogic.createAllMinutes(
       this.startTime,
@@ -232,6 +240,16 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.clearClone();
     this.hideClone();
   }
+  
+  private createAllMinutes() {
+    this.hours.forEach((h) => {
+      const result = this.minutes(h.value);
+      result.forEach((r) => {
+        r.hour = h;
+        this.allMinutes.push(r);
+      });
+    });
+  }
 
   @Emit()
   minuteClick(minute: MinuteInterval) {}
@@ -243,11 +261,12 @@ export default class CalendarHoursContainerComponent extends Mixins(
 .calendar-hours {
   flex: 1;
   position: relative;
-  .calendar-hour {
+  .calendar-hour__minute {
     box-sizing: border-box;
     border-bottom: 1px solid $border-color;
     display: flex;
     flex-direction: column;
+    align-content: space-around;
   }
 }
 </style>

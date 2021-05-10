@@ -101,6 +101,22 @@ export default class App extends Vue {
     this.createEvent(options);
   }
 
+  minuteClick(minute: MinuteInterval) {
+    let event: CalendarEvent = {
+      to: minute.to,
+      from: minute.from,
+      color: "pink",
+      id: Math.random(),
+      title: "test",
+      position: EnumCalendarDayItemPosition.Absolute,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    };
+
+    this.events.push(event);
+  }
+
   createEvent(options: CalendarDayEventOptions) {
     if (options.blockingCollidedItems?.length) return;
 
