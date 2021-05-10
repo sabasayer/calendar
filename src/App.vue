@@ -38,7 +38,7 @@ import { MinuteInterval } from "types/logic";
 })
 export default class App extends Vue {
   startTime = "08:00";
-  endTime = "23:59";
+  endTime = "21:59";
   hourHeight = 100;
   minuteInterval = 25;
 
@@ -69,6 +69,23 @@ export default class App extends Vue {
 
   itemClicked(options: CalendarDayEventOptions) {
     console.info("item clicked", options.item);
+  }
+
+  minuteClick(minute: MinuteInterval) {
+    console.log("options");
+    let event: CalendarEvent = {
+      to: minute.to,
+      from: minute.from,
+      color: "pink",
+      id: Math.random(),
+      title: "test",
+      position: EnumCalendarDayItemPosition.Absolute,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    };
+
+    this.events.push(event);
   }
 
   itemDrop(options: CalendarDayEventOptions) {

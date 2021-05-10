@@ -1,28 +1,26 @@
 <template>
   <div class="calendar-hours">
-    <div v-if="allMinutes.length">
-      <calendar-minute
-        v-for="minute in allMinutes"
-        @select-area="selectArea"
-        @select-area-finish="selectAreaFinished"
-        @click="minuteClick"
-        :key="`${minute.hour.value}_${minute.text}`"
-        :minute="minute"
-        :is-clickable="isMinutesClickable"
-        :is-area-selectable="isAreaSelectable"
-        :start-time="startTime"
-        :end-time="endTime"
-        :hour-height="hourHeight"
-        :minute-interval="minuteInterval"
-        :disabled="isActionsDisabled"
-        :new-item-position="newItemPosition"
-        :items="items"
-        :style="minuteStyle(minute.interval)"
-        class="calendar-hour__minute"
-      >
-        <slot name="minute" :minute="minute" :hour="minute.hour"></slot>
-      </calendar-minute>
-    </div>
+    <calendar-minute
+      v-for="minute in allMinutes"
+      @select-area="selectArea"
+      @select-area-finish="selectAreaFinished"
+      @click="minuteClick"
+      :key="`${minute.hour.value}_${minute.text}`"
+      :minute="minute"
+      :is-clickable="isMinutesClickable"
+      :is-area-selectable="isAreaSelectable"
+      :start-time="startTime"
+      :end-time="endTime"
+      :hour-height="hourHeight"
+      :minute-interval="minuteInterval"
+      :disabled="isActionsDisabled"
+      :new-item-position="newItemPosition"
+      :items="items"
+      :style="minuteStyle(minute.interval)"
+      class="calendar-hour__minute"
+    >
+      <slot name="minute" :minute="minute" :hour="minute.hour"></slot>
+    </calendar-minute>
 
     <calendar-item
       v-for="item in items"
@@ -109,8 +107,19 @@ export default class CalendarHoursContainerComponent extends Mixins(
   }
 
   get minutes() {
-    return (hour: number) =>
-      calendarHourLogic.createMinutes(hour, this.minuteInterval);
+    return calendarHourLogic.createAllMinutes(
+      this.startTime,
+      this.endTime,
+      this.minuteInterval
+    );
+  }
+
+  get minuteStyle() {
+    return (interval: number) => {
+      const sixtMinutesInPixel = 100;
+      const currentMinuteInPixel = (interval * sixtMinutesInPixel) / 60;
+      return { height: `${currentMinuteInPixel}px` };
+    };
   }
 
   async mounted() {
@@ -122,6 +131,10 @@ export default class CalendarHoursContainerComponent extends Mixins(
   @Watch("events", { deep: true })
   onEventsChanged() {
     this.createItems();
+  }
+
+  createAllMinutes() {
+    this.allMinutes = this.minutes;
   }
 
   calculateAvailableWidth(): number {

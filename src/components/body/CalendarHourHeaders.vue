@@ -11,12 +11,14 @@
         v-if="isMinutesVisible"
         :hour="hour.value"
         :minute-interval="minuteInterval"
+        :minutes="minutes(hour)"
       />
     </div>
   </div>
 </template>
 <script lang="ts">
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
+import { CalendarHour } from "types/logic";
 import { Component, Mixins, Prop, Vue } from "vue-property-decorator";
 import CalendarHourMixin from "./CalendarHourMixin";
 import CalendarMinuteHeadersComponent from "./CalendarMinuteHeaders.vue";
@@ -33,6 +35,16 @@ export default class CalendarHourHeadersComponent extends Mixins(
 
   get computedClass() {
     return { narrow: !this.isMinutesVisible };
+  }
+
+  get minutes() {
+    return (hour: CalendarHour) => {
+      return (
+        calendarHourLogic
+          .createAllMinutes(this.startTime, this.endTime, this.minuteInterval)
+          .filter((m) => m.hour?.value == hour.value) ?? []
+      );
+    };
   }
 }
 </script>
