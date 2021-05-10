@@ -14,7 +14,7 @@
         :is-minutes-visible="isMinutesVisible"
       />
 
-      <calendar-hours-container
+      <calendar-minutes-container
         @item-click="itemClick"
         @item-drop="itemDrop"
         @item-resize="itemResize"
@@ -38,7 +38,7 @@
         <template #item="{ item }">
           <slot name="item" :item="item"></slot>
         </template>
-      </calendar-hours-container>
+      </calendar-minutes-container>
 
       <slot name="right"></slot>
     </div>
@@ -50,7 +50,7 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import CalendarHourHeadersComponent from "./body/CalendarHourHeaders.vue";
-import CalendarHoursContainerComponent from "./body/CalendarHoursContainer.vue";
+import CalendarMinutesContainerComponent from "./body/CalendarMinutesContainer.vue";
 import CalendarDayFooterComponent from "./CalendarDayFooter.vue";
 import CalendarDayHeaderComponent from "./CalendarDayHeader.vue";
 import { CalendarDayItem } from "../../types/logic/calendar-day-item";
@@ -60,7 +60,7 @@ import { EnumCalendarDayItemPosition } from "../../types/statics/calendar-day-it
 @Component({
   components: {
     "calendar-day-header": CalendarDayHeaderComponent,
-    "calendar-hours-container": CalendarHoursContainerComponent,
+    "calendar-minutes-container": CalendarMinutesContainerComponent,
     "calendar-day-footer": CalendarDayFooterComponent,
     "calendar-hour-headers": CalendarHourHeadersComponent,
   },

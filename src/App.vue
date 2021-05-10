@@ -5,6 +5,7 @@
       @item-drop="itemDrop"
       @item-resize="itemResize"
       @area-select="areaSelect"
+      @minute-click="minuteClick"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
@@ -13,6 +14,7 @@
       :hour-padding-right="20"
       :is-area-selectable="true"
       :is-minutes-visible="true"
+      :isMinutesClickable="true"
       has-header
       header="First Day"
     >
@@ -26,7 +28,8 @@ import CalendarDayComponent from "./components/CalendarDay.vue";
 import { EnumCalendarDayItemPosition } from "../types/statics/calendar-day-item-position.enum";
 import { CalendarDayItem } from "../types/logic/calendar-day-item";
 import { CalendarEvent } from "../types/logic/calendar-event";
-import { CalendarDayEventOptions } from '../types/components/calendar-day-event-options';
+import { CalendarDayEventOptions } from "../types/components/calendar-day-event-options";
+import { MinuteInterval } from "types/logic";
 
 @Component({
   components: {
@@ -37,32 +40,31 @@ export default class App extends Vue {
   startTime = "08:00";
   endTime = "23:59";
   hourHeight = 100;
-  minuteInterval = 10;
+  minuteInterval = 25;
 
   events: CalendarEvent[] = [
-   {
-     id:1,
-     from:'16:30',
-     to:'16:40',
-     title:'Test açıklama vs',
-     color:'pink',
-     position:EnumCalendarDayItemPosition.Relative,
-     zIndex:1,
-     isDraggable:true,
-     isResizable:true
-   },
-   {
-     id:2,
-     from:'16:50',
-     to:'18:00',
-     title:'Test açıklama vs',
-     color:'pink',
-     position:EnumCalendarDayItemPosition.Relative,
-     zIndex:1,
-     isDraggable:true,
-     isResizable:true
-   },
-  
+    {
+      id: 1,
+      from: "16:30",
+      to: "16:40",
+      title: "Test açıklama vs",
+      color: "pink",
+      position: EnumCalendarDayItemPosition.Relative,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    },
+    {
+      id: 2,
+      from: "16:50",
+      to: "18:00",
+      title: "Test açıklama vs",
+      color: "pink",
+      position: EnumCalendarDayItemPosition.Relative,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    },
   ];
 
   itemClicked(options: CalendarDayEventOptions) {
@@ -80,6 +82,34 @@ export default class App extends Vue {
   areaSelect(options: CalendarDayEventOptions) {
     options.item.id = Math.random();
     this.createEvent(options);
+  }
+
+  minuteClick(minute: MinuteInterval) {
+    console.log("options");
+    let event: CalendarEvent = {
+      to: minute.to,
+      from: minute.from,
+      color: "pink",
+      id: Math.random(),
+      title: "emre",
+      position: EnumCalendarDayItemPosition.Absolute,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    };
+
+    // let event1 = {
+    //   id: 2,
+    //   from: "18:00",
+    //   to: "18:10",
+    //   title: "Test açıklama vs",
+    //   color: "pink",
+    //   position: EnumCalendarDayItemPosition.Relative,
+    //   zIndex: 1,
+    //   isDraggable: true,
+    //   isResizable: true,
+    // };
+    this.events.push(event);
   }
 
   createEvent(options: CalendarDayEventOptions) {

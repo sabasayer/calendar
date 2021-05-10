@@ -1,17 +1,12 @@
 <template>
   <div class="calendar-hours">
-    <div
-      v-for="hour in hours"
-      :key="`hour_${hour.value}`"
-      class="calendar-hour"
-      :style="computedStyle"
-    >
+    <div v-if="allMinutes.length">
       <calendar-minute
-        v-for="minute in minutes(hour.value)"
+        v-for="minute in allMinutes"
         @select-area="selectArea"
         @select-area-finish="selectAreaFinished"
         @click="minuteClick"
-        :key="`${hour.value}_${minute.text}`"
+        :key="`${minute.hour.value}_${minute.text}`"
         :minute="minute"
         :is-clickable="isMinutesClickable"
         :is-area-selectable="isAreaSelectable"
@@ -22,9 +17,10 @@
         :disabled="isActionsDisabled"
         :new-item-position="newItemPosition"
         :items="items"
+        :style="minuteStyle(minute.interval)"
         class="calendar-hour__minute"
       >
-        <slot name="minute" :minute="minute" :hour="hour"></slot>
+        <slot name="minute" :minute="minute" :hour="minute.hour"></slot>
       </calendar-minute>
     </div>
 
@@ -99,9 +95,18 @@ export default class CalendarHoursContainerComponent extends Mixins(
   readonly newItemPosition: EnumCalendarDayItemPosition;
 
   items: CalendarDayItem[] = [];
+  allMinutes: MinuteInterval[] = [];
 
   isCloneVisible: boolean = false;
   cloneItem: CalendarDayItem = calendarDayItemLogic.createDefaultModel();
+
+  get minuteStyle() {
+    return (interval: number) => {
+      const sixtMinutesInPixel = 100;
+      const currentMinuteInPixel = (interval * sixtMinutesInPixel) / 60;
+      return { height: `${currentMinuteInPixel}px` };
+    };
+  }
 
   get minutes() {
     return (hour: number) =>
@@ -110,6 +115,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
 
   async mounted() {
     await this.$nextTick();
+    this.createAllMinutes();
     this.createItems();
   }
 
@@ -221,6 +227,16 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.clearClone();
     this.hideClone();
   }
+  
+  private createAllMinutes() {
+    this.hours.forEach((h) => {
+      const result = this.minutes(h.value);
+      result.forEach((r) => {
+        r.hour = h;
+        this.allMinutes.push(r);
+      });
+    });
+  }
 
   @Emit()
   minuteClick(minute: MinuteInterval) {}
@@ -232,11 +248,12 @@ export default class CalendarHoursContainerComponent extends Mixins(
 .calendar-hours {
   flex: 1;
   position: relative;
-  .calendar-hour {
+  .calendar-hour__minute {
     box-sizing: border-box;
     border-bottom: 1px solid $border-color;
     display: flex;
     flex-direction: column;
+    align-content: space-around;
   }
 }
 </style>
