@@ -11,16 +11,14 @@
 </template>
 <script lang="ts">
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
+import { MinuteInterval } from "types/logic";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class CalendarMinuteHeadersComponent extends Vue {
   @Prop({ required: true, type: Number }) readonly hour: number;
   @Prop({ required: true, type: Number }) readonly minuteInterval: number;
-
-  get minutes() {
-    return calendarHourLogic.createMinutes(this.hour, this.minuteInterval);
-  }
+  @Prop({ required: true }) readonly minutes: MinuteInterval[];
 }
 </script>
 <style scoped lang="scss">

@@ -40,7 +40,7 @@ import { MinuteInterval } from "types/logic";
 })
 export default class App extends Vue {
   startTime = "08:00";
-  endTime = "23:59";
+  endTime = "21:59";
   hourHeight = 100;
   minuteInterval = 25;
 
