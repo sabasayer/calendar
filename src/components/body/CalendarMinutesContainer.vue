@@ -39,6 +39,8 @@
       @click="itemClick"
       @drop="itemDrop"
       @resize="resize"
+      @mouse-over="mouseOver"
+      @mouse-leave="mouseLeave"
     >
       <template>
         <slot name="item" :item="item"></slot>
@@ -227,7 +229,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.clearClone();
     this.hideClone();
   }
-  
+
   private createAllMinutes() {
     this.hours.forEach((h) => {
       const result = this.minutes(h.value);
@@ -236,6 +238,14 @@ export default class CalendarHoursContainerComponent extends Mixins(
         this.allMinutes.push(r);
       });
     });
+  }
+
+  mouseOver(item: CalendarDayItem, el: HTMLElement) {
+    this.$emit("mouse-over", item, this.$el);
+  }
+
+  mouseLeave(item: CalendarDayItem, el: HTMLElement) {
+    this.$emit("mouse-leave", item, this.$el);
   }
 
   @Emit()
@@ -250,7 +260,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
   position: relative;
   .calendar-hour__minute {
     box-sizing: border-box;
-    border-bottom: 1px solid $border-color;
     display: flex;
     flex-direction: column;
     align-content: space-around;

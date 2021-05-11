@@ -22,7 +22,7 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   _isCloneVisible: boolean;
   @PropSync("cloneItem")
   _cloneItem: CalendarDayItem;
-  @Prop({type:Boolean,default:false}) readonly disabled:boolean;
+  @Prop({ type: Boolean, default: false }) readonly disabled: boolean;
 
   mouseDown(ev: MouseEvent) {
     if (!this.item.isDraggable || this.disabled) return;
@@ -120,5 +120,15 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
 
   drop() {
     this.$emit("drop", this._cloneItem, this.$el);
+  }
+
+  mouseOver() {
+    this.createClone()
+    this.$emit("mouse-over", this._cloneItem, this.$el);
+  }
+
+  mouseLeave() {
+    this.createClone()
+    this.$emit("mouse-leave", this._cloneItem, this.$el);
   }
 }

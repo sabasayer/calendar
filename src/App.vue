@@ -6,6 +6,8 @@
       @item-resize="itemResize"
       @area-select="areaSelect"
       @minute-click="minuteClick"
+      @mouse-over="mouseOver"
+      @mouse-leave="mouseLeave"
       :start-time="startTime"
       :end-time="endTime"
       :events="events"
@@ -121,6 +123,10 @@ export default class App extends Vue {
     event.to = options.item.to;
     event.from = options.item.from;
   }
+
+  mouseOver(item: CalendarDayItem, el: HTMLElement) {}
+
+  mouseLeave(item: CalendarDayItem, el: HTMLElement) {}
 }
 </script>
 
