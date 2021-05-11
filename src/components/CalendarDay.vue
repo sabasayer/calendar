@@ -20,6 +20,8 @@
         @item-resize="itemResize"
         @area-select="areaSelect"
         @minute-click="minuteClick"
+        @mouse-over="mouseOver"
+        @mouse-leave="mouseLeave"
         :start-time="startTime"
         :end-time="endTime"
         :hour-height="hourHeight"
@@ -100,6 +102,12 @@ export default class CalendarDayComponent extends Vue {
 
   @Emit()
   minuteClick() {}
+
+  @Emit()
+  mouseOver(item: CalendarDayItem, el: HTMLElement) {}
+
+  @Emit()
+  mouseLeave(item: CalendarDayItem, el: HTMLElement) {}
 }
 </script>
 <style scoped>

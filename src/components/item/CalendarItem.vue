@@ -2,6 +2,8 @@
   <div
     @click="!disabled ? click($event) : undefined"
     @mousedown="!disabled ? mouseDown($event) : undefined"
+    @mouseover="!disabled ? mouseOver($event) : undefined"
+    @mouseleave="!disabled ? mouseLeave($event) : undefined"
     class="calendar-item"
     :style="computedStyle"
     :class="computedClass"
