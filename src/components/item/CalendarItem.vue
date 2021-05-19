@@ -10,13 +10,7 @@
   >
     <div class="calendar-item__content">
       <slot>
-        <div
-          :class="
-            item.height < hourHeight / 4
-              ? 'calendar-item__title'
-              : 'calendar-item-wrap__title'
-          "
-        >
+        <div class="calendar-item__title">
           <div>{{ item.from }} - {{ item.to }}</div>
           <div>{{ item.title }}</div>
         </div>
@@ -99,7 +93,6 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   get computedClass() {
     return {
       bordered: this.item.isBordered,
-      wraparoundBordered: this.item.isWraparoundBordered,
       clickable: this.isClickable,
       draggable: this.isDraggable,
       ghost: this.isGhost,
@@ -178,6 +171,7 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
   overflow: hidden;
   font-size: 0.75rem;
   .calendar-item__content {
+    padding: 0.25rem;
     position: relative;
     box-sizing: border-box;
     height: inherit;
@@ -187,19 +181,9 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
       flex-wrap: wrap;
       max-height: 100%;
     }
-    .calendar-item-wrap__title {
-      display: flex;
-      flex-direction: column;
-      max-height: 100%;
-    }
   }
   &.bordered {
     border-left: 5px solid;
-  }
-  &.wraparoundBordered {
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
   }
   &.clickable,
   &.draggable {
