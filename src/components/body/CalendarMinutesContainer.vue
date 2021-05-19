@@ -102,8 +102,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
 
   get minuteStyle() {
     return (interval: number) => {
-      const sixtMinutesInPixel = 100;
-      const currentMinuteInPixel = (interval * sixtMinutesInPixel) / 60;
+      const currentMinuteInPixel = (interval * this.hourHeight) / 60;
       return { height: `${currentMinuteInPixel}px` };
     };
   }
@@ -234,7 +233,6 @@ export default class CalendarHoursContainerComponent extends Mixins(
     this.clearClone();
     this.hideClone();
   }
-  
 
   mouseOver(item: CalendarDayItem, el: HTMLElement) {
     this.$emit("mouse-over", item, this.$el);
