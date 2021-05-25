@@ -235,11 +235,11 @@ export default class CalendarHoursContainerComponent extends Mixins(
   }
 
   mouseOver(item: CalendarDayItem, el: HTMLElement) {
-    this.$emit("mouse-over", item, this.$el);
+    this.$emit("mouse-over", item, el);
   }
 
   mouseLeave(item: CalendarDayItem, el: HTMLElement) {
-    this.$emit("mouse-leave", item, this.$el);
+    this.$emit("mouse-leave", item, el);
   }
 
   @Emit()
