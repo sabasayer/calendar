@@ -2,7 +2,7 @@
   <div
     @click="!disabled ? click($event) : undefined"
     @mousedown="!disabled ? mouseDown($event) : undefined"
-    @mouseover="!disabled ? mouseOver($event) : undefined"
+    @mouseenter="!disabled ? mouseOver($event) : undefined"
     @mouseleave="!disabled ? mouseLeave($event) : undefined"
     class="calendar-item"
     :style="computedStyle"
@@ -31,16 +31,11 @@
 </template>
 
 <script lang="ts">
-import { CalendarDayItem } from "types/logic/calendar-day-item";
 import {
-  Vue,
   Component,
   Prop,
-  Emit,
   Mixins,
-  Watch,
 } from "vue-property-decorator";
-import { draggableItemLogic } from "@/logic/draggable-item.logic";
 import DraggableItemMixin from "./DraggableItemMixin";
 import VerticalResizeHandlerComponent from "../VerticalResizeHandler.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
