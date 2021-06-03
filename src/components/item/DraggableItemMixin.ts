@@ -121,14 +121,4 @@ export default class DraggableItemMixin extends Mixins(DragTrackerMixin) {
   drop() {
     this.$emit("drop", this._cloneItem, this.$el);
   }
-
-  mouseOver() {
-    this.createClone()
-    this.$emit("mouse-over", this._cloneItem, this.$el);
-  }
-
-  mouseLeave() {
-    this.createClone()
-    this.$emit("mouse-leave", this._cloneItem, this.$el);
-  }
 }
