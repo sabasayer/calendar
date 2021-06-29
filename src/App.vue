@@ -45,6 +45,17 @@ export default class App extends Vue {
   minuteInterval = 25;
 
   events: CalendarEvent[] = [
+     {
+      id: 3,
+      from: "08:50",
+      to: "22:00",
+      title: "Test açıklama vs",
+      color: "orange",
+      position: EnumCalendarDayItemPosition.Static,
+      zIndex: 1,
+      isDraggable: true,
+      isResizable: true,
+    },
     {
       id: 1,
       from: "16:30",
@@ -124,9 +135,13 @@ export default class App extends Vue {
     event.from = options.item.from;
   }
 
-  mouseOver(item: CalendarDayItem, el: HTMLElement) {}
+  mouseOver(item: CalendarDayItem, el: HTMLElement) {
+    console.log('from',item.from);
+  }
 
-  mouseLeave(item: CalendarDayItem, el: HTMLElement) {}
+  mouseLeave(item: CalendarDayItem, el: HTMLElement) {
+    console.log('leave',item.from);
+  }
 }
 </script>
 

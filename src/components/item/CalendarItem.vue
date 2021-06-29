@@ -31,16 +31,7 @@
 </template>
 
 <script lang="ts">
-import { CalendarDayItem } from "types/logic/calendar-day-item";
-import {
-  Vue,
-  Component,
-  Prop,
-  Emit,
-  Mixins,
-  Watch,
-} from "vue-property-decorator";
-import { draggableItemLogic } from "@/logic/draggable-item.logic";
+import { Component, Prop, Mixins } from "vue-property-decorator";
 import DraggableItemMixin from "./DraggableItemMixin";
 import VerticalResizeHandlerComponent from "../VerticalResizeHandler.vue";
 import { calendarDayItemLogic } from "@/logic/calendar-day-item.logic";
@@ -159,6 +150,14 @@ export default class CalendarItemComponent extends Mixins(DraggableItemMixin) {
 
   resize() {
     this.$emit("resize", this._cloneItem, this.$el);
+  }
+
+  mouseOver() {
+    this.$emit("mouse-over", this.item, this.$el);
+  }
+
+  mouseLeave() {
+    this.$emit("mouse-leave", this.item, this.$el);
   }
 }
 </script>
