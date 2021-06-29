@@ -1,6 +1,7 @@
 <template>
   <div
     @click="!disabled ? click($event) : undefined"
+    @mousedown="!disabled ? mouseDown($event) : undefined"
     @mouseover="mouseOver($event)"
     @mouseleave="mouseLeave($event)"
     class="calendar-item"
