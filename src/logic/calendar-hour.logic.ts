@@ -2,8 +2,11 @@ import { timeLogic } from './time.logic';
 import { CalendarHour } from '../../types/logic/calendar-hour';
 import { MinuteInterval } from "../../types/logic/minute-interval";
 import { MinuteType } from 'types/logic/minute-composite';
+import { CalendarDayItem } from '../../types/logic/calendar-day-item'
+import { CalendarEvent } from 'types/logic';
 
 class CalendarHourLogic {
+
   static times: MinuteType[] = []
 
   createHoursArray(
@@ -37,7 +40,7 @@ class CalendarHourLogic {
       let startMinute = start.split(":")[1];
       if (index == count && endTime != to) {
         to = endTime;
-        interval =timeLogic.totalMinutesInTimeSpan(to) - timeLogic.totalMinutesInTimeSpan(start)
+        interval = timeLogic.totalMinutesInTimeSpan(to) - timeLogic.totalMinutesInTimeSpan(start)
 
       }
 
@@ -47,7 +50,37 @@ class CalendarHourLogic {
     }
     return minutes;
   }
-  
+
+  mapEvents(items: CalendarEvent[], endTime: string, startTime: string) {
+    const result = items.map(item => this.mapTime(item, endTime, startTime))
+    return result.filter(x => this.isInInterval(x, endTime, startTime))
+
+
+  }
+
+  isInInterval(item: CalendarEvent, endTime: string, startTime: string): boolean {
+    const toInMinutes = timeLogic.totalMinutesInTimeSpan(item.to);
+    const fromInMinutes = timeLogic.totalMinutesInTimeSpan(item.from);
+    const startInMinutes = timeLogic.totalMinutesInTimeSpan(startTime);
+    const endInMinutes = timeLogic.totalMinutesInTimeSpan(endTime);
+
+    return fromInMinutes >= startInMinutes && fromInMinutes <= endInMinutes && toInMinutes <= endInMinutes && toInMinutes >= startInMinutes;
+  }
+
+  mapTime(item: CalendarEvent, endTime: string, startTime: string): CalendarEvent {
+
+    const toInMinutes = timeLogic.totalMinutesInTimeSpan(item.to);
+    const fromInMinutes = timeLogic.totalMinutesInTimeSpan(item.from);
+    const startInMinutes = timeLogic.totalMinutesInTimeSpan(startTime);
+    const endInMinutes = timeLogic.totalMinutesInTimeSpan(endTime);
+
+    if (toInMinutes > endInMinutes) return { ...item, to: endTime }
+    else if (fromInMinutes < startInMinutes) return { ...item, from: startTime }
+    else return item;
+
+  }
+
+
 }
 
 export const calendarHourLogic = new CalendarHourLogic();

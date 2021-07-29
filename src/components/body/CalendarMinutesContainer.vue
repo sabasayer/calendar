@@ -107,6 +107,14 @@ export default class CalendarHoursContainerComponent extends Mixins(
     };
   }
 
+  get mappedEvents() {
+    return calendarHourLogic.mapEvents(
+      this.events,
+      this.endTime,
+      this.startTime
+    );
+  }
+
   get minutes() {
     return calendarHourLogic.createAllMinutes(
       this.startTime,
@@ -138,7 +146,7 @@ export default class CalendarHoursContainerComponent extends Mixins(
     const availableWidth = this.calculateAvailableWidth();
 
     this.items = calendarDayLogic.createItems({
-      events: this.events,
+      events: this.mappedEvents,
       startTime: this.startTime,
       hourHeight: this.hourHeight,
       containerWidth: availableWidth,
