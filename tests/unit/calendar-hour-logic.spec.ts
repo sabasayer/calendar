@@ -1,4 +1,6 @@
+import { EnumCalendarDayItemPosition } from './../../types/statics/calendar-day-item-position.enum';
 import { calendarHourLogic } from "@/logic/calendar-hour.logic";
+import { CalendarEvent } from "types/logic";
 import { MinuteInterval } from "../../types/logic/minute-interval";
 
 describe("Calendar Hour Logic", () => {
@@ -20,6 +22,109 @@ describe("Calendar Hour Logic", () => {
 
     expect(minutes).toEqual(expected);
   });
+
+
+  it("should in interval start time and end time", () => {
+
+    const items: CalendarEvent[] = [
+      {
+        id: 1,
+        from: "16:30",
+        to: "16:40",
+        title: "test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+      {
+        id: 2,
+        from: "17:30",
+        to: "18:00",
+        title: "Test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+
+      {
+        id: 3,
+        from: "20:30",
+        to: "21:00",
+        title: "Test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+
+      {
+        id: 4,
+        from: "07:30",
+        to: "09:00",
+        title: "Test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+    ];
+
+    const startTime = "08:00";
+    const endTime = "17:50";
+
+    const expected: CalendarEvent[] = [
+      {
+        id: 1,
+        from: "16:30",
+        to: "16:40",
+        title: "test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+      {
+        id: 2,
+        from: "17:30",
+        to: "17:50",
+        title: "Test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+
+      {
+        id: 4,
+        from: "08:00",
+        to: "09:00",
+        title: "Test açıklama vs",
+        color: "pink",
+        position: EnumCalendarDayItemPosition.Relative,
+        zIndex: 1,
+        isDraggable: true,
+        isResizable: true,
+      },
+    ];
+
+    const result = calendarHourLogic.mapEvents(items, endTime, startTime);
+
+
+    expect(result).toEqual(expected);
+
+
+
+
+
+  })
 
 
 
