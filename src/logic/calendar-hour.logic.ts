@@ -74,7 +74,8 @@ class CalendarHourLogic {
     const startInMinutes = timeLogic.totalMinutesInTimeSpan(startTime);
     const endInMinutes = timeLogic.totalMinutesInTimeSpan(endTime);
 
-    if (toInMinutes > endInMinutes) return { ...item, to: endTime }
+    if (toInMinutes > endInMinutes && fromInMinutes < startInMinutes) return { ...item, from: startTime, to: endTime }
+    else if (toInMinutes > endInMinutes) return { ...item, to: endTime }
     else if (fromInMinutes < startInMinutes) return { ...item, from: startTime }
     else return item;
 
